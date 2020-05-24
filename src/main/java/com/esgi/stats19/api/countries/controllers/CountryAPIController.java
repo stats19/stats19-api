@@ -22,13 +22,13 @@ public class CountryAPIController {
     }
 
     @GetMapping
-    public List<GetCountryDTO> getLeagues() {
+    public List<GetCountryDTO> getCountries() {
         return this.countryDTOService.toResponse(this.countryService.getCountries());
     }
 
-    @GetMapping("/{leagueId}")
-    public GetCountryDTO getLeague(@PathVariable Integer leagueId) {
-        return this.countryDTOService.toResponse(this.countryService.getCountry(leagueId));
+    @GetMapping("/{countryId}")
+    public GetCountryDTO getCountry(@PathVariable Integer countryId) {
+        return this.countryDTOService.toResponse(this.countryService.getCountry(countryId));
     }
 
 }
