@@ -1,4 +1,4 @@
-package com.esgi.stats19.api.leagues;
+package com.esgi.stats19.api.bets.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetLeaguesDTO {
-    public String name;
+public class BetDTO {
+    private Integer teamId;
+    private String teamName;
+    private String team;
+    private Double odds;
 }
