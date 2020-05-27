@@ -1,6 +1,7 @@
 package com.esgi.stats19.api.matches.services;
 
 import com.esgi.stats19.api.common.entities.Match;
+import com.esgi.stats19.api.common.entities.MatchBet;
 import com.esgi.stats19.api.common.entities.Team;
 import com.esgi.stats19.api.common.entities.TeamMatch;
 import com.esgi.stats19.api.common.exceptions.InternalErrorException;
@@ -46,6 +47,10 @@ public class MatchService {
                 .stream().filter(team -> !team.isHome()).findFirst()
                 .orElseThrow(() -> new InternalErrorException("Internal Error"))
                 .getTeam();
+    }
+
+    public List<MatchBet> getBets(Integer matchId) {
+        return getMatch(matchId).getBets();
     }
 
 //    public Match createMatch(CreateMatchDTO matchDT0) {

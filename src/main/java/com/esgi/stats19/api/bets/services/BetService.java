@@ -2,6 +2,7 @@ package com.esgi.stats19.api.bets.services;
 
 import com.esgi.stats19.api.bets.DTO.CreateBetDTO;
 import com.esgi.stats19.api.common.entities.MatchBet;
+import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.MatchBetRepository;
 import com.esgi.stats19.api.matches.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class BetService {
             this.matchBetRepository = matchBetRepository;
             this.betWebsiteService = betWebsiteService;
             this.matchService = matchService;
+    }
+
+    public MatchBet getBet(Integer betId) {
+        return this.matchBetRepository.findById(betId)
+                .orElseThrow(() -> new NotFoundException("bet not found"));
     }
 
 
