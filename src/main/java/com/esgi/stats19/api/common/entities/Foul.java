@@ -1,5 +1,6 @@
 package com.esgi.stats19.api.common.entities;
 
+import com.esgi.stats19.api.common.enums.Card;
 import lombok.*;
 import javax.persistence.*;
 
@@ -8,23 +9,25 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "match_bet")
-public class MatchBet {
-
+public class Foul {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer matchBetId;
-    private Double home;
-    private Double away;
-    private Double draw;
+    private Integer foulId;
+    private int elapsed;
+    private int elapsedPlus;
+    private String type;
+    private int eventIncidentTypefk;
+    
+    @Enumerated(EnumType.ORDINAL)
+    private Card card;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "match_id", referencedColumnName = "match_api_id")
-    private Match match;
+    @JoinColumn(name = "culprit_id")
+    private TeamMatchPlayer culprit;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bet_website_id")
-    private BetWebsite betWebsite;
+    @JoinColumn(name = "victim_id")
+    private TeamMatchPlayer victim;
 }

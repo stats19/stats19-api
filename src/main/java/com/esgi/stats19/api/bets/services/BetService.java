@@ -4,7 +4,7 @@ import com.esgi.stats19.api.bets.DTO.CreateBetDTO;
 import com.esgi.stats19.api.common.entities.MatchBet;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.MatchBetRepository;
-import com.esgi.stats19.api.matches.services.MatchService;
+import com.esgi.stats19.api.soccer.matches.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

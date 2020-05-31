@@ -7,11 +7,10 @@ import com.esgi.stats19.api.common.entities.BetWebsite;
 import com.esgi.stats19.api.common.entities.MatchBet;
 import com.esgi.stats19.api.common.entities.Team;
 import com.esgi.stats19.api.common.services.URIService;
-import com.esgi.stats19.api.matches.services.MatchService;
+import com.esgi.stats19.api.soccer.matches.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,8 +44,8 @@ public class BetDTOService {
         return GetBetDTO.builder()
                 .matchId(1)
                 .betId(matchBet.getMatchBetId())
-                .home(toResponse(this.matchService.getHomeTeam(matchBet.getMatch()), matchBet.getHome()))
-                .away(toResponse(this.matchService.getAwayTeam(matchBet.getMatch()), matchBet.getAway()))
+                .home(toResponse(this.matchService.getHomeTeam(matchBet.getMatch()).getTeam(), matchBet.getHome()))
+                .away(toResponse(this.matchService.getAwayTeam(matchBet.getMatch()).getTeam(), matchBet.getAway()))
                 .draw(matchBet.getDraw())
                 .match(this.uriService.getMatch(matchBet.getMatch().getMatchId()).toString())
                 .build();
