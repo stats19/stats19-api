@@ -1,8 +1,6 @@
 package com.esgi.stats19.api.common.entities;
 
 import lombok.*;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -13,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="soccer_matches")
+@Table(name="soccer_match")
 public class Match {
 
     @Id
@@ -21,7 +19,8 @@ public class Match {
     private Integer matchId;
 
     @NotNull
-    private int match_api_id;
+    @Column(name = "match_api_id")
+    private int matchApiId;
     @NotNull
     private int stage;
     @NotNull

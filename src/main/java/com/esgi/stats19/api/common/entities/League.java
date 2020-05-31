@@ -1,8 +1,6 @@
 package com.esgi.stats19.api.common.entities;
 
 import lombok.*;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
