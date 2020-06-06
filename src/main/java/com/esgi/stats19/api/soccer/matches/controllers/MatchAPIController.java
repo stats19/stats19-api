@@ -2,17 +2,16 @@ package com.esgi.stats19.api.soccer.matches.controllers;
 
 import com.esgi.stats19.api.bets.DTO.GetBetDTO;
 import com.esgi.stats19.api.bets.services.BetDTOService;
+import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchPlayersDTO;
 import com.esgi.stats19.api.soccer.matches.services.MatchDTOService;
 import com.esgi.stats19.api.soccer.matches.services.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/matches")
@@ -30,8 +29,16 @@ public class MatchAPIController {
     }
 
     @GetMapping
-    public List<GetMatchDTO> getMatches() {
-        return this.matchDTOService.toResponse(this.matchService.getMatches());
+    public List<GetMatchDTO> getMatches(@RequestParam Optional<Boolean> played) {
+        List<Match> matches;
+        if (played.isPresent()) {
+            System.out.println(played.get());
+            matches = this.matchService.getMatches(played.get());
+        } else {
+            matches = this.matchService.getMatches();
+        }
+
+        return this.matchDTOService.toResponse(matches);
     }
 
     @GetMapping("/{matchId}")

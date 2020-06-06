@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +24,18 @@ public class MatchService {
 
     public List<Match> getMatches() {
         return this.matchRepository.findAll();
+    }
+
+    public List<Match> getMatches(boolean played) {
+        if (played) {
+            return this.matchRepository.findAllByPlayedIsTrue();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        Date now = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_YEAR, 7);
+        return this.matchRepository.findAllByDateBetweenAndPlayedIsFalse(now, calendar.getTime());
     }
 
     public Match getMatch(Integer matchId) {

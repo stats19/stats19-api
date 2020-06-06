@@ -1,0 +1,14 @@
+version: '3'
+services:
+  stats19-api:
+    build:
+      context: .
+    environment: 
+        PORT: ${PORT}
+        MYSQL_HOST_ARG: ${MYSQL_HOST}
+        MYSQL_PORT_ARG: ${MYSQL_PORT}
+        MYSQL_DATABASE_ARG: ${MYSQL_DATABASE}
+        MYSQL_USERNAME_ARG: ${MYSQL_USERNAME}
+        MYSQL_PASSWORD_ARG: ${MYSQL_PASSWORD}
+    ports:
+      - "8080:8080"

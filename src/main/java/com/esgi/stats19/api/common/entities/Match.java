@@ -24,11 +24,14 @@ public class Match {
     @NotNull
     private int stage;
     @NotNull
+    @Temporal(TemporalType.DATE)
     private Date date;
     @NotNull
     private boolean status;
     @NotNull
     private String season;
+    @NotNull
+    private boolean played;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
