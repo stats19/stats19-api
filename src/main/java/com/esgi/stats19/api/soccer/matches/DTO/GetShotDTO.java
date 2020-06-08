@@ -13,7 +13,7 @@ public class GetShotDTO {
     private Integer shotId;
 
     private String scorerName;
-    private String scorer;
+    private String shooter;
     private String assistName;
     private String assist;
 

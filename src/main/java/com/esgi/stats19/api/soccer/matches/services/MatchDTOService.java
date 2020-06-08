@@ -88,7 +88,7 @@ public class MatchDTOService {
         return GetShotDTO.builder()
                 .shotId(shot.getShotId())
                 .scorerName(shooter.getName())
-                .scorer(this.uriService.getPlayer(shooter.getPlayerId()).toString())
+                .shooter(this.uriService.getPlayer(shooter.getPlayerId()).toString())
                 .assistName(assist.getName())
                 .assist(this.uriService.getPlayer(assist.getPlayerId()).toString())
                 .elapsed(shot.getElapsed())
