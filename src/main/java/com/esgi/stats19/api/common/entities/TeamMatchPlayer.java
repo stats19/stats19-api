@@ -1,8 +1,10 @@
 package com.esgi.stats19.api.common.entities;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -17,6 +19,9 @@ public class TeamMatchPlayer {
     private Integer teamMatchPlayerId;
     private int positionX;
     private int positionY;
+    @NotNull
+    @ColumnDefault("true")
+    private boolean firstTeam;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)

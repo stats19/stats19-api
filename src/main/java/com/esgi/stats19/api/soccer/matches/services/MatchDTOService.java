@@ -73,6 +73,7 @@ public class MatchDTOService {
                 .team(this.uriService.getTeam(team.getTeamId()).toString())
                 .positionX(teamMatchPlayer.getPositionX())
                 .positionY(teamMatchPlayer.getPositionY())
+                .firstTeam(teamMatchPlayer.isFirstTeam())
                 .shots(teamMatchPlayer.getScored().stream().map(this::toResponse).collect(Collectors.toList()))
                 .assists(teamMatchPlayer.getAssisted().stream().map(this::toResponse).collect(Collectors.toList()))
                 .corners(teamMatchPlayer.getCorners().stream().map(this::toResponse).collect(Collectors.toList()))

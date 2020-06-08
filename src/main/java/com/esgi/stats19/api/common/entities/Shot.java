@@ -23,7 +23,7 @@ public class Shot {
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "scorer_id")
+    @JoinColumn(name = "shooter_id")
     private TeamMatchPlayer scorer;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
