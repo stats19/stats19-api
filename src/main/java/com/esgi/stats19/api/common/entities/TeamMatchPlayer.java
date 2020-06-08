@@ -17,20 +17,24 @@ public class TeamMatchPlayer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer teamMatchPlayerId;
+
+    @Column(name = "position_x")
     private int positionX;
+
+    @Column(name = "position_y")
     private int positionY;
     @NotNull
     @ColumnDefault("true")
     private boolean firstTeam;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "player_id", referencedColumnName = "player_api_id")
     private Player player;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_match_id")
     private TeamMatch teamMatch;
 
     @OneToMany(mappedBy = "teamMatchPlayer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

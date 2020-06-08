@@ -3,6 +3,7 @@ package com.esgi.stats19.api.common.entities;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="soccer_match")
-public class Match {
+public class Match implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +27,6 @@ public class Match {
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date date;
-    @NotNull
-    private boolean status;
     @NotNull
     private String season;
     @NotNull

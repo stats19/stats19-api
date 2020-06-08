@@ -26,13 +26,12 @@ public class BetWebsite {
     private Integer betWebsiteId;
 
     @NotNull
-    @Column(length = 45)
-    @Size(min = 2, max = 45)
+    @Column(length = 255)
+    @Size(min = 2, max = 255)
     private String name;
 
-    @NotNull
-    @Column(length = 45)
-    @Size(min = 2, max = 45)
+    @Column(length = 255)
+    @Size(min = 2, max = 255)
     private String url;
 
     private Boolean display = true;

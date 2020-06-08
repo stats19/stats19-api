@@ -32,7 +32,7 @@ public class MatchDTOService {
                 .season(match.getSeason())
                 .stage(match.getStage())
                 .date(match.getDate().toString())
-                .status(match.isStatus())
+                .played(match.isPlayed())
                 .home(this.toResponse(this.matchService.getHomeTeam(match)))
                 .away(this.toResponse(this.matchService.getAwayTeam(match)))
                 .bets(this.uriService.getBetsByMatch(match.getMatchId()).toString())

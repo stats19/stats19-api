@@ -25,5 +25,5 @@ public class GetMatchDTO {
 
     private String bets;
 
-    private boolean status;
+    private boolean played;
 }
