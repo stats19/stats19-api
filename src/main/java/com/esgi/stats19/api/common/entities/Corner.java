@@ -16,9 +16,10 @@ public class Corner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cornerId;
     private int elapsed;
+
+    @Column(nullable = true)
     private int elapsedPlus;
     private String type;
-    private int eventIncidentTypefk;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)

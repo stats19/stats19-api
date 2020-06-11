@@ -14,6 +14,8 @@ public class Foul {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer foulId;
     private int elapsed;
+
+    @Column(nullable = true)
     private int elapsedPlus;
     private String type;
     private int eventIncidentTypefk;
@@ -27,7 +29,7 @@ public class Foul {
     private TeamMatchPlayer culprit;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "victim_id")
     private TeamMatchPlayer victim;
 }

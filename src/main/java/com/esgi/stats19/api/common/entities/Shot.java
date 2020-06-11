@@ -15,6 +15,8 @@ public class Shot {
     private Integer shotId;
     private int eventIncidentTypefk;
     private int elapsed;
+
+    @Column(nullable = true)
     private int elapsedPlus;
     private String type;
     private String goalType;
@@ -27,7 +29,7 @@ public class Shot {
     private TeamMatchPlayer scorer;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "assist_id")
     private TeamMatchPlayer assist;
 }

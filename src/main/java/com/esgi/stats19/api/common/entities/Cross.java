@@ -16,6 +16,8 @@ public class Cross {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer crossId;
     private int elapsed;
+    
+    @Column(nullable = true)
     private int elapsedPlus;
     private String type;
     private int eventIncidentTypefk;
