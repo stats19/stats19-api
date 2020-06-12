@@ -1,11 +1,14 @@
 package com.esgi.stats19.api.soccer.players.services;
 
+import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.common.entities.Player;
+import com.esgi.stats19.api.common.entities.TeamMatch;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlayerService {
@@ -15,13 +18,19 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public List<Player> players() {
+    public List<Player> getPlayers() {
         return this.playerRepository.findAll();
     }
 
     public Player getPlayer(Integer playerId) {
         return this.playerRepository.findById(playerId)
                 .orElseThrow(() -> new NotFoundException("not found player"));
+    }
+
+    public List<Match> getMatches(Integer playerId) {
+        return this.getPlayer(playerId).getTeamsMatchesPlayers()
+                .stream().map(teamMatchPlayer -> teamMatchPlayer.getTeamMatch().getMatch())
+                .collect(Collectors.toList());
     }
 
 

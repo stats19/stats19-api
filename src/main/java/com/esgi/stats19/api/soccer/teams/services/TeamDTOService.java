@@ -27,8 +27,7 @@ public class TeamDTOService {
                 .shortName(team.getShortName())
                 .teamFifaId(team.getTeamFifaId())
                 .teamApiId(team.getTeamApiId())
-                .matches("URI matches")
-                .matches(this.uriService.getTeam(team.getTeamId()).toString())
+                .matches(this.uriService.getMatchesByTeam(team.getTeamId()).toString())
                 .build();
     }
 
