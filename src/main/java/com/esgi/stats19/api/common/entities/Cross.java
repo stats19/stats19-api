@@ -15,12 +15,10 @@ public class Cross {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer crossId;
-    private int elapsed;
-    
-    @Column(nullable = true)
-    private int elapsedPlus;
+    private Integer elapsed;
+    private Integer elapsedPlus;
     private String type;
-    private int eventIncidentTypefk;
+    private Integer eventIncidentTypefk;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)

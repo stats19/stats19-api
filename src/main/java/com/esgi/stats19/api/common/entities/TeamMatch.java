@@ -19,12 +19,12 @@ public class TeamMatch {
     private Integer teamMatchId;
 
     @NotNull
-    private int goals;
+    private Integer goals;
     @NotNull
     private boolean home;
     @NotNull
     @Size(max= 100)
-    private int possession;
+    private Integer possession;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)

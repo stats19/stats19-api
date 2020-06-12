@@ -17,8 +17,8 @@ public class GetFoulDTO {
     private String victimName;
     private String victim;
 
-    private int elapsed;
-    private int elapsedPlus;
+    private Integer elapsed;
+    private Integer elapsedPlus;
     private String type;
     private String card;
 }

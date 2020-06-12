@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class getDetailedMatchDTO {
     private Integer matchId;
-    private int matchFifaId;
+    private Integer matchFifaId;
 
     private String season;
-    private int stage;
+    private Integer stage;
     private String date;
 
     private GetTeamMatchDTO home;

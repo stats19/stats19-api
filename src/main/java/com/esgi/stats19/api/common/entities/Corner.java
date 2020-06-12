@@ -15,10 +15,8 @@ public class Corner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cornerId;
-    private int elapsed;
-
-    @Column(nullable = true)
-    private int elapsedPlus;
+    private Integer elapsed;
+    private Integer elapsedPlus;
     private String type;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude

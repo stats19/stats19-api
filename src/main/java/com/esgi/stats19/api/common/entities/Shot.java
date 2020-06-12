@@ -13,11 +13,9 @@ public class Shot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer shotId;
-    private int eventIncidentTypefk;
-    private int elapsed;
-
-    @Column(nullable = true)
-    private int elapsedPlus;
+    private Integer eventIncidentTypefk;
+    private Integer elapsed;
+    private Integer elapsedPlus;
     private String type;
     private String goalType;
     private boolean scored;

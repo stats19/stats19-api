@@ -13,12 +13,10 @@ public class Foul {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer foulId;
-    private int elapsed;
-
-    @Column(nullable = true)
-    private int elapsedPlus;
+    private Integer elapsed;
+    private Integer elapsedPlus;
     private String type;
-    private int eventIncidentTypefk;
+    private Integer eventIncidentTypefk;
     
     @Enumerated(EnumType.ORDINAL)
     private Card card;

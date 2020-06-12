@@ -20,8 +20,8 @@ public class Team implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer teamId;
     @Column(name = "team_api_id")
-    private int teamApiId;
-    private int teamFifaId;
+    private Integer teamApiId;
+    private Integer teamFifaId;
     private String name;
     private String shortName;
 

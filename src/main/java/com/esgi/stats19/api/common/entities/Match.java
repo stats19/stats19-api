@@ -21,9 +21,9 @@ public class Match implements Serializable {
 
     @NotNull
     @Column(name = "match_api_id")
-    private int matchApiId;
+    private Integer matchApiId;
     @NotNull
-    private int stage;
+    private Integer stage;
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date date;

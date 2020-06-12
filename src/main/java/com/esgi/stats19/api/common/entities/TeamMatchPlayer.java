@@ -19,10 +19,10 @@ public class TeamMatchPlayer {
     private Integer teamMatchPlayerId;
 
     @Column(name = "position_x")
-    private int positionX;
+    private Integer positionX;
 
     @Column(name = "position_y")
-    private int positionY;
+    private Integer positionY;
     @NotNull
     @ColumnDefault("true")
     private boolean firstTeam;

@@ -17,8 +17,8 @@ public class GetTeamMatchPlayerDTO {
     private String player;
     private String teamName;
     private String team;
-    private int positionX;
-    private int positionY;
+    private Integer positionX;
+    private Integer positionY;
     private boolean firstTeam;
 
     private List<GetCornerDTO> corners;

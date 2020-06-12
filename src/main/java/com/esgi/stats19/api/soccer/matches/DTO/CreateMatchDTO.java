@@ -15,10 +15,10 @@ import javax.validation.constraints.Size;
 public class CreateMatchDTO {
     @NotNull
     @Size(min=1)
-    private int teamApiId;
+    private Integer teamApiId;
     @NotNull
     @Size(min=1)
-    private int teamFifaId;
+    private Integer teamFifaId;
     @NotNull
     @Size(min=2, max=45)
     private String name;

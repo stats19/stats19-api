@@ -15,7 +15,7 @@ public class GetCrossDTO {
     private String playerName;
     private String player;
 
-    private int elapsed;
-    private int elapsedPlus;
+    private Integer elapsed;
+    private Integer elapsedPlus;
     private String type;
 }

@@ -17,8 +17,8 @@ public class GetShotDTO {
     private String assistName;
     private String assist;
 
-    private int elapsed;
-    private int elapsedPlus;
+    private Integer elapsed;
+    private Integer elapsedPlus;
     private String type;
     private String goalType;
     private boolean scored;
