@@ -36,12 +36,16 @@ public class URIService {
         return this.getURI("players", playerId);
     }
 
+    public URI getMatchesByPlayer(Integer playerId) {
+        return this.getSubURI("players", "matches", playerId);
+    }
+
     public URI getMatchesByTeam(Integer teamId) {
         return this.getSubURI("teams", "matches", teamId);
     }
 
     public URI getMatchByTeam(Integer teamId, Integer matchId) {
-        return this.createURI("{root}/{teamId}/{sub}/{teamId}", "teams", teamId, "matches", matchId);
+        return this.createURI("api/{root}/{teamId}/{sub}/{teamId}", "teams", teamId, "matches", matchId);
     }
 
     public URI getPlayerByMatch(Integer matchId) {
@@ -56,11 +60,11 @@ public class URIService {
 //    }
 
     private URI getURI(String path, Integer id) {
-        return this.createURI("{root}/{id}", path, id);
+        return this.createURI("api/{root}/{id}", path, id);
     }
 
     private URI getSubURI(String root, String sub, Integer id) {
-        return this.createURI("{root}/{id}/{sub}", root, id, sub);
+        return this.createURI("api/{root}/{id}/{sub}", root, id, sub);
     }
 
     private URI createURI(String pattern, Object... params) {

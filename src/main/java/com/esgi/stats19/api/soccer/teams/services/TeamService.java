@@ -1,6 +1,8 @@
 package com.esgi.stats19.api.soccer.teams.services;
 
+import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.common.entities.Team;
+import com.esgi.stats19.api.common.entities.TeamMatch;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.TeamRepository;
 import com.esgi.stats19.api.soccer.teams.DTO.CreateTeamDTO;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamService {
@@ -27,6 +30,10 @@ public class TeamService {
     public Team getTeam(Integer teamId) {
         return this.teamRepository.findById(teamId)
                 .orElseThrow(() -> new NotFoundException("team " + teamId + " not exist"));
+    }
+
+    public List<Match> getMatches(Integer teamId) {
+        return this.getTeam(teamId).getTeamMatches().stream().map(TeamMatch::getMatch).collect(Collectors.toList());
     }
 
     public Team createTeam(CreateTeamDTO teamDT0) {

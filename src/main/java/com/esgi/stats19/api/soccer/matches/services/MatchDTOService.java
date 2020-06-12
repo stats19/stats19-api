@@ -84,13 +84,13 @@ public class MatchDTOService {
 
     public GetShotDTO toResponse(Shot shot) {
         var shooter = shot.getScorer().getPlayer();
-        var assist = shot.getAssist().getPlayer();
+        var assist = shot.getAssist() != null ? shot.getAssist().getPlayer() : null;
         return GetShotDTO.builder()
                 .shotId(shot.getShotId())
                 .scorerName(shooter.getName())
                 .shooter(this.uriService.getPlayer(shooter.getPlayerId()).toString())
-                .assistName(assist.getName())
-                .assist(this.uriService.getPlayer(assist.getPlayerId()).toString())
+                .assistName(assist != null ?assist.getName() : null)
+                .assist(assist != null ? this.uriService.getPlayer(assist.getPlayerId()).toString() : null)
                 .elapsed(shot.getElapsed())
                 .elapsedPlus(shot.getElapsedPlus())
                 .type(shot.getType())
@@ -127,15 +127,15 @@ public class MatchDTOService {
     }
 
     public GetFoulDTO toResponse(Foul foul) {
-        var victim = foul.getVictim().getPlayer();
+        var victim = foul.getVictim() != null ? foul.getVictim().getPlayer() : null;
         var culprit = foul.getCulprit().getPlayer();
 
         return GetFoulDTO.builder()
                 .foulId(foul.getFoulId())
                 .culpritName(culprit.getName())
                 .culprit(this.uriService.getPlayer(culprit.getPlayerId()).toString())
-                .victimName(victim.getName())
-                .victim(this.uriService.getPlayer(victim.getPlayerId()).toString())
+                .victimName(victim != null ? victim.getName() : null)
+                .victim(victim != null ? this.uriService.getPlayer(victim.getPlayerId()).toString() : null)
                 .elapsed(foul.getElapsed())
                 .elapsedPlus(foul.getElapsedPlus())
                 .type(foul.getType())
