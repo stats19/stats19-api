@@ -1,6 +1,8 @@
 package com.esgi.stats19.api.authentication.security;
+
 import com.esgi.stats19.api.authentication.entities.Account;
 import com.esgi.stats19.api.authentication.repositories.AccountRepository;
+import com.esgi.stats19.api.authentication.services.AccountService;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,17 +13,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DomainUserDetailsService implements UserDetailsService {
 
-    private final AccountRepository userRepository;
+    private final AccountService accountService;
 
-    public DomainUserDetailsService(AccountRepository userRepository) {
-        this.userRepository = userRepository;
+    public DomainUserDetailsService(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Account appUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AuthenticationServiceException("username " + username + " not found"));
+        Account appUser = accountService.getUser(username);
 
         return User.builder()
                 .username(username)
@@ -32,5 +33,6 @@ public class DomainUserDetailsService implements UserDetailsService {
                 .credentialsExpired(false)
                 .disabled(false)
                 .build();
+
     }
 }
