@@ -66,9 +66,9 @@ public class MatchDTOService {
         var player = teamMatchPlayer.getPlayer();
         var team = teamMatchPlayer.getTeamMatch().getTeam();
         return GetTeamMatchPlayerDTO.builder()
-                .playerId(player.getPlayerId())
-                .name(player.getName())
-                .player(this.uriService.getPlayer(player.getPlayerId()).toString())
+                .playerId(player != null ? player.getPlayerId() : null)
+                .name(player != null ? player.getName() : "unknown")
+                .player(player != null ? this.uriService.getPlayer(player.getPlayerId()).toString() : null)
                 .teamName(team.getName())
                 .team(this.uriService.getTeam(team.getTeamId()).toString())
                 .positionX(teamMatchPlayer.getPositionX())
