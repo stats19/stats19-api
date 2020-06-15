@@ -4,6 +4,7 @@ import com.esgi.stats19.api.bets.DTO.GetBetDTO;
 import com.esgi.stats19.api.bets.services.BetDTOService;
 import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDTO;
+import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchPlayersDTO;
 import com.esgi.stats19.api.soccer.matches.services.MatchDTOService;
 import com.esgi.stats19.api.soccer.matches.services.MatchService;
@@ -51,6 +52,11 @@ public class MatchAPIController {
         var match = this.matchService.getMatch(matchId);
         return this.matchDTOService.toResponse(this.matchService.getHomePlayers(match),
                 this.matchService.getAwayPlayers(match));
+    }
+
+    @GetMapping("/{matchId}/formatted")
+    public GetMatchFormattedDTO getFormattedMatch(@PathVariable Integer matchId) {
+        return this.matchService.getMatchFormattedDTO(matchId);
     }
 
     @GetMapping("/{matchId}/bets")

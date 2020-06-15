@@ -1,16 +1,19 @@
 package com.esgi.stats19.api.soccer.matches.services;
 
 import com.esgi.stats19.api.common.entities.*;
+import com.esgi.stats19.api.common.enums.Card;
 import com.esgi.stats19.api.common.exceptions.InternalErrorException;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.MatchRepository;
+import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDetailsFormattedDTO;
+import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
+import com.esgi.stats19.api.soccer.matches.DTO.GetTeamMatchFormatted;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MatchService {
@@ -66,6 +69,84 @@ public class MatchService {
     public List<TeamMatchPlayer> getAwayPlayers(Match match) {
         return this.getAwayTeam(match).getTeamsMatchesPlayers();
     }
+
+    public GetMatchFormattedDTO getMatchFormattedDTO(Integer matchId) {
+        var match = this.getMatch(matchId);
+        return GetMatchFormattedDTO.builder()
+                .matchId(match.getMatchId())
+                .awayTeam(getTeamMatchFormatted(getAwayTeam(match)))
+                .homeTeam(getTeamMatchFormatted(getHomeTeam(match)))
+                .details(getMatchDetailsFormattedDTO(match))
+                .build();
+    }
+
+    public GetTeamMatchFormatted getTeamMatchFormatted(TeamMatch teamMatch) {
+        var team = teamMatch.getTeam();
+        return GetTeamMatchFormatted.builder()
+                .teamId(team.getTeamId())
+                .name(team.getName())
+                .possession(teamMatch.getPossession())
+                .goals(teamMatch.getGoals())
+                .shotOnTarget(teamMatch.getTeamsMatchesPlayers().stream().reduce(0, (shotsOnTarget, teamMatchPlayer2)
+                        -> Math.toIntExact(shotsOnTarget + teamMatchPlayer2.getScored().stream().filter(Shot::isOnTarget).count()), Integer::sum))
+                .fouls(teamMatch.getTeamsMatchesPlayers().stream().reduce(0, (fouls, teamMatchPlayer2)
+                        -> fouls + teamMatchPlayer2.getCulprits().size(), Integer::sum))
+                .yellowCards(countCards(Card.YELLOW_CARD, teamMatch))
+                .redCards(countCards(Card.RED_CARD, teamMatch))
+                .build();
+
+    }
+
+    public Integer countCards(Card cardType, TeamMatch teamMatch) {
+        return teamMatch.getTeamsMatchesPlayers().stream().reduce(0, (yellowCard, teamMatchPlayer2)
+                -> Math.toIntExact(yellowCard + teamMatchPlayer2.getCulprits()
+                .stream().filter(card -> card.getCard() == cardType).count()), Integer::sum);
+    }
+
+    public List<GetMatchDetailsFormattedDTO> getMatchDetailsFormattedDTO(Match match) {
+        List<GetMatchDetailsFormattedDTO> details = new ArrayList<>();
+
+        match.getTeamMatches().forEach(
+                teamMatch -> teamMatch.getTeamsMatchesPlayers().forEach(
+                        teamMatchPlayer -> {
+                            var player = teamMatchPlayer.getPlayer();
+                            teamMatchPlayer.getCulprits().stream().filter(foul -> foul.getCard() != Card.NO_CARD).forEach(
+                                    foul -> details.add(
+                                            GetMatchDetailsFormattedDTO
+                                                    .builder()
+                                                    .playerId(player != null ? player.getPlayerId() : null)
+                                                    .playerName(player != null ? player.getName() : null)
+                                                    .elapsed(foul.getElapsed())
+                                                    .elapsedPlus(foul.getElapsedPlus())
+                                                    .type(foul.getCard() == Card.YELLOW_CARD ? 1 : 0)
+                                                    .build()
+                                    )
+                            );
+
+                            teamMatchPlayer.getScored().forEach(
+                                    shot -> details.add(
+                                            GetMatchDetailsFormattedDTO
+                                                    .builder()
+                                                    .playerId(player != null ? player.getPlayerId() : null)
+                                                    .playerName(player != null ? player.getName() : null)
+                                                    .elapsed(shot.getElapsed())
+                                                    .elapsedPlus(shot.getElapsedPlus())
+                                                    .type(2)
+                                                    .build()
+                                    ));
+                        }
+                )
+        );
+
+        return details.stream()
+                .sorted((d, d2) -> getElapsed(d2) - getElapsed(d)).collect(Collectors.toList());
+    }
+
+    public Integer getElapsed(GetMatchDetailsFormattedDTO getMatchDetailsFormattedDTO) {
+        var elapsedPlus = getMatchDetailsFormattedDTO.getElapsedPlus() != null ? getMatchDetailsFormattedDTO.getElapsedPlus() : 0;
+        return getMatchDetailsFormattedDTO.getElapsed() + elapsedPlus;
+    }
+
 
     public List<TeamMatch> getTeams(Match match) {
         return match.getTeamMatches();

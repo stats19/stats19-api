@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class getDetailedMatchDTO {
+public class GetDetailedMatchDTO {
     private Integer matchId;
     private Integer matchFifaId;
 
