@@ -30,13 +30,20 @@ public class MatchAPIController {
     }
 
     @GetMapping
-    public List<GetMatchDTO> getMatches(@RequestParam Optional<Boolean> played) {
+    public List<GetMatchDTO> getMatches(
+            @RequestParam(required = false) Boolean played,
+            @RequestParam(required = false) Boolean score
+    ) {
         List<Match> matches;
-        if (played.isPresent()) {
-            System.out.println(played.get());
-            matches = this.matchService.getMatches(played.get());
+        if (played != null) {
+            System.out.println(played);
+            matches = this.matchService.getMatches(played);
         } else {
-            matches = this.matchService.getMatches();
+            if (score != null && score) {
+                matches = this.matchService.getMatchToScore();
+            } else {
+                matches = this.matchService.getMatches();
+            }
         }
 
         return this.matchDTOService.toResponse(matches);

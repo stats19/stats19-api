@@ -2,16 +2,23 @@ package com.esgi.stats19.api.soccer.matches.services;
 
 import com.esgi.stats19.api.common.entities.*;
 import com.esgi.stats19.api.common.enums.Card;
+import com.esgi.stats19.api.common.exceptions.BadRequestException;
 import com.esgi.stats19.api.common.exceptions.InternalErrorException;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
+import com.esgi.stats19.api.common.exceptions.ServerErrorException;
 import com.esgi.stats19.api.common.repositories.MatchRepository;
+import com.esgi.stats19.api.common.repositories.TeamMatchPlayerRepository;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDetailsFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetTeamMatchFormatted;
+import com.esgi.stats19.api.soccer.players.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,10 +26,14 @@ import java.util.stream.Collectors;
 public class MatchService {
 
     private final MatchRepository matchRepository;
+    private final TeamMatchPlayerRepository teamMatchPlayerRepository;
+    private final PlayerService playerService;
 
     @Autowired
-    public MatchService(MatchRepository matchRepository) {
+    public MatchService(MatchRepository matchRepository, TeamMatchPlayerRepository teamMatchPlayerRepository, PlayerService playerService) {
         this.matchRepository = matchRepository;
+        this.teamMatchPlayerRepository = teamMatchPlayerRepository;
+        this.playerService = playerService;
     }
 
     public List<Match> getMatches() {
@@ -35,10 +46,20 @@ public class MatchService {
         }
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
+
+        try {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            calendar.setTime(dateFormatter.parse("2016-01-01"));
+        } catch (ParseException e) {
+            throw new ServerErrorException("date not parsable");
+        }
         Date now = calendar.getTime();
         calendar.add(Calendar.DAY_OF_YEAR, 7);
         return this.matchRepository.findAllByDateBetweenAndPlayedIsFalse(now, calendar.getTime());
+    }
+
+    public List<Match> getMatchToScore() {
+        return this.matchRepository.findAllByPlayedIsTrueAndScoreCalculatedIsFalse();
     }
 
     public Match getMatch(Integer matchId) {
@@ -78,6 +99,27 @@ public class MatchService {
                 .homeTeam(getTeamMatchFormatted(getHomeTeam(match)))
                 .details(getMatchDetailsFormattedDTO(match))
                 .build();
+    }
+
+    public void updatePlayerScore(Integer matchId, Integer playerId, Double score) {
+        var match = this.getMatch(matchId);
+        var playerOrNull = getHomePlayers(match).stream()
+                .filter(p -> p.getPlayer().getPlayerId().equals(playerId)) .collect(Collectors.toList());
+        if (playerOrNull.size() == 0) {
+            playerOrNull = getAwayPlayers(match).stream()
+                    .filter(p -> p.getPlayer().getPlayerId().equals(playerId)) .collect(Collectors.toList());
+        }
+
+        if(playerOrNull.size() != 1) {
+            throw new ServerErrorException("too much player matches");
+        }
+
+        var p = playerOrNull.stream().findFirst().orElseThrow(() -> new BadRequestException("player not exist"));
+        p.setScore(score);
+        match.setScoreCalculated(true);
+        this.matchRepository.save(match);
+        this.teamMatchPlayerRepository.save(p);
+
     }
 
     public GetTeamMatchFormatted getTeamMatchFormatted(TeamMatch teamMatch) {

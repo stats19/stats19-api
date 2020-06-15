@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface MatchRepository extends JpaRepository<Match, Integer> {
     List<Match> findAllByPlayedIsTrue();
+    List<Match> findAllByPlayedIsTrueAndScoreCalculatedIsFalse();
     List<Match> findAllByDateBetweenAndPlayedIsFalse(@NotNull Date start, @NotNull Date end);
 }

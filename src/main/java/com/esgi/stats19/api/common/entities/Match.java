@@ -1,6 +1,8 @@
 package com.esgi.stats19.api.common.entities;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -31,6 +33,9 @@ public class Match implements Serializable {
     private String season;
     @NotNull
     private boolean played;
+    @NotNull
+    @ColumnDefault("false")
+    private Boolean scoreCalculated;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)

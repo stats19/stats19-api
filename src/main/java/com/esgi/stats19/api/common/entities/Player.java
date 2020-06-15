@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -28,7 +29,8 @@ public class Player implements Serializable {
     @Size(min=1, max=100)
     private String name;
     private Integer player_fifa_api_id;
-    private String birthday;
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
     private Integer height;
     private Integer weight;
 
