@@ -104,13 +104,17 @@ public class MatchService {
     public void updatePlayerScore(Integer matchId, Integer playerId, Double score) {
         var match = this.getMatch(matchId);
         var playerOrNull = getHomePlayers(match).stream()
-                .filter(p -> p.getPlayer().getPlayerId().equals(playerId)) .collect(Collectors.toList());
+                .filter(p -> p.getPlayer().getPlayerId().equals(playerId)).collect(Collectors.toList());
         if (playerOrNull.size() == 0) {
             playerOrNull = getAwayPlayers(match).stream()
                     .filter(p -> p.getPlayer().getPlayerId().equals(playerId)) .collect(Collectors.toList());
         }
 
         if(playerOrNull.size() != 1) {
+            playerOrNull.forEach(p -> System.out.println(p.getPlayer().getPlayerId()));
+            playerOrNull.forEach(p -> System.out.println(p.getPlayer().getName()));
+            playerOrNull.forEach(p -> System.out.println(p.getTeamMatchPlayerId()));
+            System.out.println(playerOrNull);
             throw new ServerErrorException("too much player matches");
         }
 
