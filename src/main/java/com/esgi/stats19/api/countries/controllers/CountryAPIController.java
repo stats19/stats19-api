@@ -31,4 +31,9 @@ public class CountryAPIController {
         return this.countryDTOService.toResponse(this.countryService.getCountry(countryId));
     }
 
+    @GetMapping("/broker")
+    public void getBroker() {
+
+    }
+
 }
