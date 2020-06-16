@@ -14,5 +14,6 @@ public class GetMatchDetailsFormattedDTO {
     private String playerName;
     private Integer elapsed;
     private Integer elapsedPlus;
+    private Boolean home;
     private Integer type;
 }

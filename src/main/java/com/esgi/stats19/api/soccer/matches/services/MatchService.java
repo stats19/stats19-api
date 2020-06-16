@@ -160,6 +160,7 @@ public class MatchService {
                                                     .playerName(player != null ? player.getName() : null)
                                                     .elapsed(foul.getElapsed())
                                                     .elapsedPlus(foul.getElapsedPlus())
+                                                    .home(teamMatch.isHome())
                                                     .type(foul.getCard() == Card.YELLOW_CARD ? 1 : 0)
                                                     .build()
                                     )
@@ -173,6 +174,7 @@ public class MatchService {
                                                     .playerName(player != null ? player.getName() : null)
                                                     .elapsed(shot.getElapsed())
                                                     .elapsedPlus(shot.getElapsedPlus())
+                                                    .home(teamMatch.isHome())
                                                     .type(2)
                                                     .build()
                                     ));

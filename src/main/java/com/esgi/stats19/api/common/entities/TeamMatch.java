@@ -36,6 +36,7 @@ public class TeamMatch {
     @JoinColumn(name = "match_id", referencedColumnName = "match_api_id")
     private Match match;
 
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "teamMatch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamMatchPlayer> teamsMatchesPlayers;
 }
