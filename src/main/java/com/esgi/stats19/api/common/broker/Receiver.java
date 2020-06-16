@@ -20,15 +20,13 @@ public class Receiver implements Serializable {
         this.sender = sender;
     }
 
-    @Autowired
-
 
     @RabbitHandler
     public void receiveMessage(byte[] message) {
         try {
             JSONObject returnMessage = new JSONObject(new String(message));
             System.out.println("Received <" + returnMessage + ">");
-            this.sender.send("predict","DEVELOPMENT","TRUE");
+//            this.sender.send("predict","DEVELOPMENT","TRUE");
         } catch (JSONException e) {
             e.printStackTrace();
         }
