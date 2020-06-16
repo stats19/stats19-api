@@ -1,6 +1,7 @@
 package com.esgi.stats19.api.soccer.leagues.controllers;
 
 import com.esgi.stats19.api.soccer.leagues.DTO.GetLeagueDTO;
+import com.esgi.stats19.api.soccer.leagues.DTO.GetMatchByLeague;
 import com.esgi.stats19.api.soccer.leagues.services.LeagueDTOService;
 import com.esgi.stats19.api.soccer.leagues.services.LeagueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class LeagueAPIController {
     @GetMapping("/{leagueId}")
     public GetLeagueDTO getLeague(@PathVariable Integer leagueId) {
         return this.leagueDTOService.toResponse(this.leagueService.getLeague(leagueId));
+    }
+
+    @GetMapping("/{leagueId}/matches")
+    public GetMatchByLeague getMatches(@PathVariable Integer leagueId) {
+        return this.leagueDTOService.getMatchDto(this.leagueService.getMatches(leagueId));
     }
 }
