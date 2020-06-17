@@ -69,6 +69,8 @@ public class LeagueService {
         return this.leagueRepository.save(league);
     }
 
+//    public
+
     public void deleteLeague(Integer leagueId) {
         this.leagueRepository.deleteById(leagueId);
     }

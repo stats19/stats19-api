@@ -8,7 +8,6 @@ import com.esgi.stats19.api.soccer.players.DTO.GetPlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Max;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;

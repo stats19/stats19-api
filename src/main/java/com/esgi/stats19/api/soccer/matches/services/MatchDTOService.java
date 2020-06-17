@@ -18,7 +18,7 @@ public class MatchDTOService {
     private final MatchService matchService;
 
     @Autowired
-    public MatchDTOService(URIService uriService, MatchService matchService){
+    public MatchDTOService(URIService uriService, MatchService matchService) {
         this.uriService = uriService;
         this.matchService = matchService;
     }
@@ -89,7 +89,7 @@ public class MatchDTOService {
                 .shotId(shot.getShotId())
                 .scorerName(shooter.getName())
                 .shooter(this.uriService.getPlayer(shooter.getPlayerId()).toString())
-                .assistName(assist != null ?assist.getName() : null)
+                .assistName(assist != null ? assist.getName() : null)
                 .assist(assist != null ? this.uriService.getPlayer(assist.getPlayerId()).toString() : null)
                 .elapsed(shot.getElapsed())
                 .elapsedPlus(shot.getElapsedPlus())
