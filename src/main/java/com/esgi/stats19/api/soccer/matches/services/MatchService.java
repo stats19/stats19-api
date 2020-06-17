@@ -12,11 +12,11 @@ import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDetailsFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetTeamMatchFormatted;
 import com.esgi.stats19.api.soccer.players.services.PlayerService;
+import com.esgi.stats19.api.soccer.teams.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -27,13 +27,13 @@ public class MatchService {
 
     private final MatchRepository matchRepository;
     private final TeamMatchPlayerRepository teamMatchPlayerRepository;
-    private final PlayerService playerService;
+    private final TeamService teamService;
 
     @Autowired
-    public MatchService(MatchRepository matchRepository, TeamMatchPlayerRepository teamMatchPlayerRepository, PlayerService playerService) {
+    public MatchService(MatchRepository matchRepository, TeamMatchPlayerRepository teamMatchPlayerRepository, TeamService teamService) {
         this.matchRepository = matchRepository;
         this.teamMatchPlayerRepository = teamMatchPlayerRepository;
-        this.playerService = playerService;
+        this.teamService = teamService;
     }
 
     public List<Match> getMatches() {
@@ -111,10 +111,6 @@ public class MatchService {
         }
 
         if(playerOrNull.size() != 1) {
-            playerOrNull.forEach(p -> System.out.println(p.getPlayer().getPlayerId()));
-            playerOrNull.forEach(p -> System.out.println(p.getPlayer().getName()));
-            playerOrNull.forEach(p -> System.out.println(p.getTeamMatchPlayerId()));
-            System.out.println(playerOrNull);
             throw new ServerErrorException("too much player matches");
         }
 
@@ -124,6 +120,12 @@ public class MatchService {
         this.matchRepository.save(match);
         this.teamMatchPlayerRepository.save(p);
 
+    }
+
+    public void forecastMatch(Integer matchId, Integer teamId) {
+        var match = getMatch(matchId);
+        var team = teamService.getTeam(teamId);
+        match.setExpectedWinner(team);
     }
 
     public GetTeamMatchFormatted getTeamMatchFormatted(TeamMatch teamMatch) {
@@ -194,7 +196,6 @@ public class MatchService {
         var elapsedPlus = getMatchDetailsFormattedDTO.getElapsedPlus() != null ? getMatchDetailsFormattedDTO.getElapsedPlus() : 0;
         return getMatchDetailsFormattedDTO.getElapsed() + elapsedPlus;
     }
-
 
     public List<TeamMatch> getTeams(Match match) {
         return match.getTeamMatches();

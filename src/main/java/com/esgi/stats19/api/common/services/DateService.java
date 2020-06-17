@@ -28,10 +28,20 @@ public class DateService {
         return calendar.getTime();
     }
 
-    public Date yesterday() {
+    public String getSeason() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today());
-        calendar.add(Calendar.DAY_OF_YEAR, -1);
-        return calendar.getTime();
+        var year = calendar.get(Calendar.YEAR);
+        var month = calendar.get(Calendar.MONTH);
+
+        if (month < 8) {
+            calendar.add(Calendar.YEAR, -1);
+            var limit = calendar.get(Calendar.YEAR);
+            return limit + "/" + year;
+        } else {
+            calendar.add(Calendar.YEAR, 1);
+            var limit = calendar.get(Calendar.YEAR);
+            return year + "/" + limit;
+        }
     }
 }

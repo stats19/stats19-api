@@ -11,4 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RankingItem {
     private Integer teamId;
+    private String name;
+    private int matchPlayed;
+    private int win;
+    private int draw;
+    private int lose;
+    private int score;
+    private int points;
 }

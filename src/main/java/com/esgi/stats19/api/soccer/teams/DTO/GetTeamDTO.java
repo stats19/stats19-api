@@ -11,9 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetTeamDTO {
     private Integer teamId;
-    private int teamApiId;
-    private int teamFifaId;
     private String name;
     private String shortName;
+    private Integer matchesPlayed;
+    private Integer matchesWin;
+    private Integer matchesDraw;
+    private Integer matchesLose;
+    private Integer homeWin;
+    private Integer awayWin;
+    private Integer goals;
+    private Integer goalsConceded;
+    private Integer foul;
     private String matches;
 }
