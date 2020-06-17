@@ -132,8 +132,8 @@ public class MatchDTOService {
 
         return GetFoulDTO.builder()
                 .foulId(foul.getFoulId())
-                .culpritName(culprit.getName())
-                .culprit(this.uriService.getPlayer(culprit.getPlayerId()).toString())
+                .culpritName(culprit != null ? culprit.getName() : null)
+                .culprit(culprit != null ? this.uriService.getPlayer(culprit.getPlayerId()).toString() : null  )
                 .victimName(victim != null ? victim.getName() : null)
                 .victim(victim != null ? this.uriService.getPlayer(victim.getPlayerId()).toString() : null)
                 .elapsed(foul.getElapsed())
