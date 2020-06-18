@@ -2,6 +2,7 @@ package com.esgi.stats19.api.soccer.matches.services;
 
 import com.esgi.stats19.api.common.entities.*;
 import com.esgi.stats19.api.common.enums.Card;
+import com.esgi.stats19.api.common.enums.Winner;
 import com.esgi.stats19.api.common.exceptions.BadRequestException;
 import com.esgi.stats19.api.common.exceptions.InternalErrorException;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
@@ -122,10 +123,9 @@ public class MatchService {
 
     }
 
-    public void forecastMatch(Integer matchId, Integer teamId) {
+    public void forecastMatch(Integer matchId, Winner winner) {
         var match = getMatch(matchId);
-        var team = teamService.getTeam(teamId);
-        match.setExpectedWinner(team);
+        match.setForecast(winner);
     }
 
     public GetTeamMatchFormatted getTeamMatchFormatted(TeamMatch teamMatch) {

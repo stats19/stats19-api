@@ -1,5 +1,6 @@
 package com.esgi.stats19.api.common.entities;
 
+import com.esgi.stats19.api.common.enums.Winner;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -37,10 +38,8 @@ public class Match implements Serializable {
     @ColumnDefault("false")
     private Boolean scoreCalculated;
 
-    @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "expected_team_id")
-    private Team expectedWinner;
+    @Enumerated(EnumType.ORDINAL)
+    private Winner forecast;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)

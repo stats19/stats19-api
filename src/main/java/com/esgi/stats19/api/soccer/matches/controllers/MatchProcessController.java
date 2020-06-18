@@ -21,6 +21,6 @@ public class MatchProcessController {
 
     @PutMapping("/{matchId}")
     public void updateForecastMatch(@PathVariable Integer matchId, @RequestBody UpdateForecastDTO winner) {
-        this.matchService.forecastMatch(matchId, winner.getTeamId());
+        this.matchService.forecastMatch(matchId, winner.getForecast());
     }
 }

@@ -3,7 +3,6 @@ package com.esgi.stats19.api.soccer.leagues.services;
 import com.esgi.stats19.api.common.entities.League;
 import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.common.entities.Team;
-import com.esgi.stats19.api.common.enums.ResultMatch;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.LeagueRepository;
 import com.esgi.stats19.api.common.services.DateService;

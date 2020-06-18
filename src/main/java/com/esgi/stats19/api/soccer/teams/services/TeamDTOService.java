@@ -1,7 +1,6 @@
 package com.esgi.stats19.api.soccer.teams.services;
 
 import com.esgi.stats19.api.common.entities.Team;
-import com.esgi.stats19.api.common.enums.ResultMatch;
 import com.esgi.stats19.api.common.services.URIService;
 import com.esgi.stats19.api.soccer.teams.DTO.GetTeamDTO;
 import org.springframework.beans.factory.annotation.Autowired;

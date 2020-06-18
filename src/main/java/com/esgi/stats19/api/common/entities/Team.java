@@ -27,9 +27,4 @@ public class Team implements Serializable {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamMatch> teamMatches;
-
-    @OneToMany(mappedBy = "expectedWinner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Match> expectedWins;
-
-
 }
