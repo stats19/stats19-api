@@ -2,6 +2,7 @@ package com.esgi.stats19.api.soccer.matches.services;
 
 import com.esgi.stats19.api.common.entities.*;
 import com.esgi.stats19.api.common.enums.Card;
+import com.esgi.stats19.api.common.enums.ResultMatch;
 import com.esgi.stats19.api.common.enums.Winner;
 import com.esgi.stats19.api.common.exceptions.BadRequestException;
 import com.esgi.stats19.api.common.exceptions.InternalErrorException;

@@ -3,16 +3,21 @@ package com.esgi.stats19.api.soccer.teams.services;
 import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.common.entities.Team;
 import com.esgi.stats19.api.common.entities.TeamMatch;
+import com.esgi.stats19.api.common.enums.ResultMatch;
+import com.esgi.stats19.api.common.enums.Winner;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.exceptions.ServerErrorException;
 import com.esgi.stats19.api.common.repositories.TeamRepository;
 import com.esgi.stats19.api.common.services.DateService;
+import com.esgi.stats19.api.soccer.leagues.DTO.GetLeagueMatch;
 import com.esgi.stats19.api.soccer.teams.DTO.CreateTeamDTO;
 import com.esgi.stats19.api.soccer.teams.DTO.GetMatches;
+import com.esgi.stats19.api.soccer.teams.DTO.GetTeamLeague;
 import com.esgi.stats19.api.soccer.teams.DTO.UpdateTeamDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,6 +99,7 @@ public class TeamService {
     public List<TeamMatch> getSeasonMatches(Team team) {
         return team.getTeamMatches().stream()
                 .filter(teamMatch -> matchIsSeason(teamMatch.getMatch()) && teamMatch.getMatch().isPlayed())
+                .sorted((teamMatch, teamMatch2) -> teamMatch2.getMatch().getDate().compareTo(teamMatch.getMatch().getDate()))
                 .collect(Collectors.toList());
     }
 
@@ -124,6 +130,40 @@ public class TeamService {
     public TeamMatch getOpponent(Match match, Integer teamId) {
         return match.getTeamMatches().stream().filter(teamMatch -> !teamMatch.getTeam().getTeamId().equals(teamId))
                 .findFirst().orElseThrow(() -> new ServerErrorException("no opponent founded"));
+    }
+
+    public ResultMatch getResultMatch(TeamMatch teamMatch) {
+        var opponent = getOpponent(teamMatch.getMatch(), teamMatch.getTeam().getTeamId());
+        return opponent.getGoals() > teamMatch.getGoals()
+                ? ResultMatch.LOSE : opponent.getGoals() < teamMatch.getGoals()
+                ? ResultMatch.WIN : ResultMatch.DRAW;
+    }
+
+    public List<TeamMatch> getNextMatches(Team team) {
+        return team.getTeamMatches().stream()
+                .filter(teamMatch -> !teamMatch.getMatch().isPlayed())
+                .sorted(Comparator.comparing(teamMatch -> teamMatch.getMatch().getDate()))
+                .collect(Collectors.toList());
+    }
+
+    public ResultMatch getForecast(Winner winner, Boolean home) {
+        if (winner == Winner.DRAW) {
+            return ResultMatch.DRAW;
+        } else if(winner == Winner.HOME) {
+            return home ? ResultMatch.WIN : ResultMatch.LOSE;
+        } else if(winner == Winner.AWAY) {
+            return home ? ResultMatch.LOSE : ResultMatch.WIN;
+        } else {
+            return ResultMatch.NO_RESULT;
+        }
+    }
+
+    public GetTeamLeague getLeagueMatch(Team team) {
+        var league = team.getTeamMatches()
+                .stream().findFirst().orElseThrow(() -> new ServerErrorException("GetLeagueMatch error"))
+                .getMatch().getLeague();
+
+        return new GetTeamLeague(league.getLeagueId(), league.getName());
     }
 
     public void deleteTeam(Integer teamId) {

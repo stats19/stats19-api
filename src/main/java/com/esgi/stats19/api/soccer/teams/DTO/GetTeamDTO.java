@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetTeamDTO {
     private Integer teamId;
+    private GetTeamLeague league;
     private String name;
     private String shortName;
     private Integer matchesPlayed;
@@ -22,5 +25,7 @@ public class GetTeamDTO {
     private Integer goals;
     private Integer goalsConceded;
     private Integer foul;
-    private String matches;
+    private List<GetRecentMatch> recentMatches;
+    private List<GetPlayedMatch> playedMatches;
+    private List<GetNextMatch> getNextMatches;
 }
