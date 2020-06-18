@@ -38,7 +38,7 @@ public class Match implements Serializable {
     private Boolean scoreCalculated;
 
     @ToString.Exclude @EqualsAndHashCode.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "expected_team_id")
     private Team expectedWinner;
 
