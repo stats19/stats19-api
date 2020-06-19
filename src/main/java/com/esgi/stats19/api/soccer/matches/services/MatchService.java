@@ -127,6 +127,7 @@ public class MatchService {
     public void forecastMatch(Integer matchId, Winner winner) {
         var match = getMatch(matchId);
         match.setForecast(winner);
+        this.matchRepository.save(match);
     }
 
     public GetTeamMatchFormatted getTeamMatchFormatted(TeamMatch teamMatch) {
