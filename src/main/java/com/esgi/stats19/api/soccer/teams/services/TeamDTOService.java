@@ -46,7 +46,7 @@ public class TeamDTOService {
                 .awayWin(teamService.countMatches(matches.getWins(), false))
                 .homeWin(teamService.countMatches(matches.getWins(), true))
                 .playedMatches(playerMatches.stream().map(this::getPlayedMatch).collect(Collectors.toList()))
-                .getNextMatches(nextMatches.subList(0, Math.min(10, nextMatches.size()))
+                .nextMatches(nextMatches.subList(0, Math.min(10, nextMatches.size()))
                         .stream().map(this::getNextMatch).collect(Collectors.toList()))
                 .recentMatches(playerMatches.subList(0, Math.min(5, playerMatches.size()))
                         .stream().map(this::getRecentMatch).collect(Collectors.toList()))

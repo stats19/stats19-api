@@ -27,5 +27,5 @@ public class GetTeamDTO {
     private Integer foul;
     private List<GetRecentMatch> recentMatches;
     private List<GetPlayedMatch> playedMatches;
-    private List<GetNextMatch> getNextMatches;
+    private List<GetNextMatch> nextMatches;
 }
