@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   stats19-api:
+    image: ${TAG_VERSION}
     build:
       context: .
       args:
