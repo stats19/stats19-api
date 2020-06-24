@@ -53,7 +53,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("register")
-    public GetCreatedAccount register(@RequestBody CreateAccountDTO registerDTO) {
-        return this.accountService.createdAccount(registerDTO);
+    public GetUserDTO register(@RequestBody CreateAccountDTO registerDTO) {
+        return this.userDTOService.toResponse(this.accountService.createdAccount(registerDTO));
     }
 }

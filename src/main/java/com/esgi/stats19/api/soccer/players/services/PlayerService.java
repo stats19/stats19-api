@@ -33,4 +33,10 @@ public class PlayerService {
                 .collect(Collectors.toList());
     }
 
+    public Player updateScore(Integer playerId, Double score) {
+        var player = getPlayer(playerId);
+        player.setScoreAverage(score);
+        return playerRepository.save(player);
+    }
+
 }

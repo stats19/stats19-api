@@ -20,6 +20,7 @@ public class GetTeamMatchPlayerDTO {
     private Integer positionX;
     private Integer positionY;
     private boolean firstTeam;
+    private Double averageScore;
 
     private List<GetCornerDTO> corners;
     private List<GetCrossDTO> crosses;

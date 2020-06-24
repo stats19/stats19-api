@@ -33,6 +33,7 @@ public class Player implements Serializable {
     private Date birthday;
     private Integer height;
     private Integer weight;
+    private Double scoreAverage;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamMatchPlayer> teamsMatchesPlayers;
