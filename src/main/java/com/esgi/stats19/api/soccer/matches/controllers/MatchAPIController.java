@@ -2,6 +2,7 @@ package com.esgi.stats19.api.soccer.matches.controllers;
 
 import com.esgi.stats19.api.bets.DTO.GetBetDTO;
 import com.esgi.stats19.api.bets.services.BetDTOService;
+import com.esgi.stats19.api.common.broker.Sender;
 import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/matches")
@@ -21,12 +21,14 @@ public class MatchAPIController {
     private final MatchService matchService;
     private final MatchDTOService matchDTOService;
     private final BetDTOService betDTOService;
+    private final Sender rabbitSender;
 
     @Autowired
-    public MatchAPIController(MatchService matchService, MatchDTOService matchDTOService, BetDTOService betDTOService) {
+    public MatchAPIController(MatchService matchService, MatchDTOService matchDTOService, BetDTOService betDTOService, Sender rabbitSender) {
         this.matchService = matchService;
         this.matchDTOService = matchDTOService;
         this.betDTOService = betDTOService;
+        this.rabbitSender = rabbitSender;
     }
 
     @GetMapping
@@ -69,5 +71,10 @@ public class MatchAPIController {
     @GetMapping("/{matchId}/bets")
     public List<GetBetDTO> getBets(@PathVariable Integer matchId) {
         return this.betDTOService.betToResponse(this.matchService.getBets(matchId));
+    }
+
+    @PostMapping("/forecast")
+    public void updateForecast() {
+        this.rabbitSender.send("forecast", "production", "true");
     }
 }
