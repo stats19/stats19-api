@@ -29,6 +29,7 @@ public class PlayerDTOService {
                 .age(calculateAge(player.getBirthday().toString()))
                 .weight(player.getWeight())
                 .height(player.getHeight())
+                .score(player.getScoreAverage())
                 .playedMatches(player.getTeamsMatchesPlayers().size())
                 .fouls(player.getTeamsMatchesPlayers().stream().reduce(0,
                         (count, teamMatchPlayer) -> count + teamMatchPlayer.getCulprits().size(), Integer::sum))

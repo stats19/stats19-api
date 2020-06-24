@@ -26,18 +26,18 @@ public class AccountService {
                 .orElseThrow(() -> new AuthenticationServiceException("username " + username + " not found"));
     }
 
-    public GetCreatedAccount createdAccount(CreateAccountDTO accountDTO) {
+    public Account createdAccount(CreateAccountDTO accountDTO) {
         var account = Account.builder().email(accountDTO.getEmail())
                 .role("USER").username(accountDTO.getUsername())
                 .password(passwordEncoder.encode(accountDTO.getPassword()))
                 .build();
-
+        Account user;
         try {
-            this.accountRepository.save(account);
+            user = this.accountRepository.save(account);
         } catch (Exception e) {
             throw new BadRequestException("bad params");
         }
 
-        return GetCreatedAccount.builder().email(account.getEmail()).success(true).build();
+        return user;
     }
 }

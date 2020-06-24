@@ -22,5 +22,6 @@ public class GetPlayerDTO {
     private Integer yellowCards;
     private Integer shotOnTarget;
     private Integer goals;
+    private Double score;
     private String matches;
 }

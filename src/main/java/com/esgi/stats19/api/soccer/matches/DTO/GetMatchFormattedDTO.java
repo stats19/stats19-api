@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetMatchFormattedDTO {
     private Integer matchId;
+    private GetLeagueDTO league;
     private GetTeamMatchFormatted homeTeam;
     private GetTeamMatchFormatted awayTeam;
     private List<GetMatchDetailsFormattedDTO> details;

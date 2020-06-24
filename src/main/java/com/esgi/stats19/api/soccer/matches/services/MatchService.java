@@ -10,6 +10,7 @@ import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.exceptions.ServerErrorException;
 import com.esgi.stats19.api.common.repositories.MatchRepository;
 import com.esgi.stats19.api.common.repositories.TeamMatchPlayerRepository;
+import com.esgi.stats19.api.soccer.matches.DTO.GetLeagueDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDetailsFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetTeamMatchFormatted;
@@ -95,8 +96,11 @@ public class MatchService {
 
     public GetMatchFormattedDTO getMatchFormattedDTO(Integer matchId) {
         var match = this.getMatch(matchId);
+        var league = match.getLeague();
         return GetMatchFormattedDTO.builder()
                 .matchId(match.getMatchId())
+                .league(GetLeagueDTO.builder().leagueId(league.getLeagueId())
+                        .leagueName(league.getName()).build())
                 .awayTeam(getTeamMatchFormatted(getAwayTeam(match)))
                 .homeTeam(getTeamMatchFormatted(getHomeTeam(match)))
                 .details(getMatchDetailsFormattedDTO(match))
@@ -109,10 +113,10 @@ public class MatchService {
                 .filter(p -> p.getPlayer() != null && p.getPlayer().getPlayerId().equals(playerId)).collect(Collectors.toList());
         if (playerOrNull.size() == 0) {
             playerOrNull = getAwayPlayers(match).stream()
-                    .filter(p -> p.getPlayer() != null && p.getPlayer().getPlayerId().equals(playerId)) .collect(Collectors.toList());
+                    .filter(p -> p.getPlayer() != null && p.getPlayer().getPlayerId().equals(playerId)).collect(Collectors.toList());
         }
 
-        if(playerOrNull.size() != 1) {
+        if (playerOrNull.size() != 1) {
             throw new ServerErrorException("too much player matches");
         }
 
