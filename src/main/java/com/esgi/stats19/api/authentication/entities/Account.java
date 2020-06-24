@@ -1,6 +1,9 @@
 package com.esgi.stats19.api.authentication.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
@@ -9,6 +12,9 @@ import javax.validation.constraints.Email;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 public class Account {
     @Id

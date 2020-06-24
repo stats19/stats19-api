@@ -75,6 +75,6 @@ public class MatchAPIController {
 
     @PostMapping("/forecast")
     public void updateForecast() {
-        this.rabbitSender.send("forecast", "production", "true");
+        this.rabbitSender.send("predict", "DEVELOPMENT", "false");
     }
 }

@@ -1,5 +1,7 @@
 package com.esgi.stats19.api.authentication.controllers;
 
+import com.esgi.stats19.api.authentication.dto.CreateAccountDTO;
+import com.esgi.stats19.api.authentication.dto.GetCreatedAccount;
 import com.esgi.stats19.api.authentication.dto.GetUserDTO;
 import com.esgi.stats19.api.authentication.dto.LoginDTO;
 import com.esgi.stats19.api.authentication.security.TokenProvider;
@@ -20,7 +22,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.readOnlyHttpHeaders;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/")
 public class AuthenticationController {
 
     private final TokenProvider tokenProvider;
@@ -38,7 +40,7 @@ public class AuthenticationController {
         this.userDTOService = userDTOService;
     }
 
-    @PostMapping
+    @PostMapping("login")
     public ResponseEntity<GetUserDTO> login(@RequestBody LoginDTO loginDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
 
@@ -48,5 +50,10 @@ public class AuthenticationController {
         httpHeaders.add(AUTHORIZATION, "Bearer " + token);
         var account = this.accountService.getUser(authentication.getName());
         return ResponseEntity.ok().headers(httpHeaders).body(this.userDTOService.toResponse(account));
+    }
+
+    @PostMapping("register")
+    public GetCreatedAccount register(@RequestBody CreateAccountDTO registerDTO) {
+        return this.accountService.createdAccount(registerDTO);
     }
 }
