@@ -4,6 +4,8 @@ import com.esgi.stats19.api.bets.DTO.GetBetDTO;
 import com.esgi.stats19.api.bets.services.BetDTOService;
 import com.esgi.stats19.api.common.broker.Sender;
 import com.esgi.stats19.api.common.entities.Match;
+import com.esgi.stats19.api.common.enums.ProcessStatus;
+import com.esgi.stats19.api.process.services.ProcessService;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchPlayersDTO;
@@ -22,13 +24,16 @@ public class MatchAPIController {
     private final MatchDTOService matchDTOService;
     private final BetDTOService betDTOService;
     private final Sender rabbitSender;
+    private final ProcessService processService;
 
     @Autowired
-    public MatchAPIController(MatchService matchService, MatchDTOService matchDTOService, BetDTOService betDTOService, Sender rabbitSender) {
+    public MatchAPIController(MatchService matchService, MatchDTOService matchDTOService,
+                              BetDTOService betDTOService, Sender rabbitSender, ProcessService processService) {
         this.matchService = matchService;
         this.matchDTOService = matchDTOService;
         this.betDTOService = betDTOService;
         this.rabbitSender = rabbitSender;
+        this.processService = processService;
     }
 
     @GetMapping
@@ -75,6 +80,9 @@ public class MatchAPIController {
 
     @PostMapping("/forecast")
     public void updateForecast() {
-        this.rabbitSender.send("predict", "DEVELOPMENT", "false");
+        var process = processService.getProcess("predict");
+        if (process == null || process.getStatus() != ProcessStatus.STARTED) {
+            this.rabbitSender.send("predict", "DEVELOPMENT", "false");
+        }
     }
 }
