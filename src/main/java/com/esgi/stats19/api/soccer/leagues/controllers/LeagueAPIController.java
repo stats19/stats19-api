@@ -38,7 +38,8 @@ public class LeagueAPIController {
 
     @GetMapping("/{leagueId}/matches")
     public GetMatchByLeague getMatches(@PathVariable Integer leagueId) {
-        return this.leagueDTOService.getMatchDto(this.leagueService.getMatches(leagueId));
+        var league = leagueService.getLeague(leagueId);
+        return this.leagueDTOService.getMatchDto(this.leagueService.getMatches(league), league);
     }
     @GetMapping("/{leagueId}/ranking")
     public GetRankingDTO getRanking(@PathVariable Integer leagueId) {

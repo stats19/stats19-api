@@ -59,11 +59,16 @@ public class LeagueService {
         return this.leagueRepository.save(league);
     }
 
-    public List<Match> getMatches(Integer leagueId) {
+    public List<Match> getMatches(League league) {
         var today = this.dateService.today();
         var limit = this.dateService.endDate();
-        return this.getLeague(leagueId).getMatches().stream().filter(match ->
-                today.compareTo(match.getDate()) * match.getDate().compareTo(limit) >= 0
+        System.out.println(today);
+        System.out.println(limit);
+        return league.getMatches().stream().filter(match ->
+                {
+                    System.out.println(match.getDate());
+                    return match.getDate().compareTo(today) >= 0 && match.getDate().compareTo(limit) <= 0;
+                }
         ).collect(Collectors.toList());
     }
 

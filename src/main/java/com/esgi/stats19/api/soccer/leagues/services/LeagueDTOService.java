@@ -40,8 +40,7 @@ public class LeagueDTOService {
         return leagues.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
-    public GetMatchByLeague getMatchDto(@NotNull List<Match> matches) {
-        var league = matches.stream().findFirst().orElseThrow(() -> new ServerErrorException("error")).getLeague();
+    public GetMatchByLeague getMatchDto(@NotNull List<Match> matches, League league) {
         return GetMatchByLeague.builder()
                 .leagueId(league.getLeagueId())
                 .leagueName(league.getName())
