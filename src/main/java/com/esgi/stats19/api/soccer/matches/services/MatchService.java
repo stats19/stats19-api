@@ -188,7 +188,7 @@ public class MatchService {
                                     )
                             );
 
-                            teamMatchPlayer.getScored().forEach(
+                            teamMatchPlayer.getScored().stream().filter(Shot::isScored).forEach(
                                     shot -> details.add(
                                             GetMatchDetailsFormattedDTO
                                                     .builder()
