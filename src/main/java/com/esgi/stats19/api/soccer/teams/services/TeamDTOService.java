@@ -53,7 +53,7 @@ public class TeamDTOService {
                 .build();
     }
 
-    private GetPlayedMatch getPlayedMatch(TeamMatch teamMatch) {
+    public GetPlayedMatch getPlayedMatch(TeamMatch teamMatch) {
         var match = teamMatch.getMatch();
         return GetPlayedMatch.builder()
                 .matchId(match.getMatchId())
@@ -83,7 +83,7 @@ public class TeamDTOService {
                 .build();
     }
 
-    private PlayedMatchTeam getPlayedMatchTeam(Match match, Boolean home) {
+    public PlayedMatchTeam getPlayedMatchTeam(Match match, Boolean home) {
         TeamMatch teamMatch = null;
         if (home) {
             teamMatch =  matchService.getHomeTeam(match);

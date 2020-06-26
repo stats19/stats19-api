@@ -1,6 +1,6 @@
 package com.esgi.stats19.api.soccer.leagues.DTO;
 
-import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDTO;
+import com.esgi.stats19.api.soccer.teams.DTO.GetPlayedMatch;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +16,5 @@ public class GetMatchByLeague {
     private Integer leagueId;
     private String leagueName;
     private List<GetLeagueMatch> matches;
-    private List<GetMatchDTO> playedMatches;
+    private List<GetPlayedMatch> playedMatches;
 }
