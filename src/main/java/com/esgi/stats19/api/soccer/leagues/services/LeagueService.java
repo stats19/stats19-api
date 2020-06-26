@@ -89,7 +89,7 @@ public class LeagueService {
                 .leagueId(league.getLeagueId())
                 .leagueName(league.getName())
                 .season(season)
-                .rankingItems(getSeasonTeam(league.getLeagueId())
+                .rankingItems(getSeasonTeam(league.getLeagueId(), season)
                         .stream().map(team -> getRankingItem(team, season))
                         .sorted(Comparator.comparingInt(RankingItem::getPoints).reversed())
                         .collect(Collectors.toList()))
@@ -111,10 +111,12 @@ public class LeagueService {
                 .build();
     }
 
-    public List<Team> getSeasonTeam(Integer leagueId) {
+    public List<Team> getSeasonTeam(Integer leagueId, String season) {
+        if (season == null) season = dateService.getSeason();
         HashSet<Integer> teams = new HashSet<>();
+        String finalSeason = season;
         getLeague(leagueId).getMatches().stream()
-                .filter(match -> match.getSeason().equals(dateService.getSeason()) && match.isPlayed())
+                .filter(match -> match.getSeason().equals(finalSeason) && match.isPlayed())
                 .forEach(match -> {
                     match.getTeamMatches().forEach(teamMatch -> {
                         teams.add(teamMatch.getTeam().getTeamId());
