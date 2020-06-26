@@ -6,10 +6,7 @@ import com.esgi.stats19.api.soccer.teams.DTO.GetTeamDTO;
 import com.esgi.stats19.api.soccer.teams.services.TeamDTOService;
 import com.esgi.stats19.api.soccer.teams.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,13 +27,13 @@ public class TeamAPIController {
     }
 
     @GetMapping
-    public List<GetTeamDTO> getTeams() {
-        return this.teamDTOService.toResponse(this.teamService.getTeams());
+    public List<GetTeamDTO> getTeams(@RequestParam(value = "season", required = false) String season) {
+        return this.teamDTOService.toResponse(this.teamService.getTeams(), season);
     }
 
     @GetMapping("/{teamId}")
-    public GetTeamDTO getTeam(@PathVariable Integer teamId) {
-        return this.teamDTOService.toResponse(this.teamService.getTeam(teamId));
+    public GetTeamDTO getTeam(@PathVariable Integer teamId, @RequestParam(value = "season", required = false) String season) {
+        return this.teamDTOService.toResponse(this.teamService.getTeam(teamId), season);
     }
 
     @GetMapping("/{teamId}/matches")

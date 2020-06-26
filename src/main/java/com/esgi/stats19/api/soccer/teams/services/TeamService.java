@@ -9,7 +9,6 @@ import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.exceptions.ServerErrorException;
 import com.esgi.stats19.api.common.repositories.TeamRepository;
 import com.esgi.stats19.api.common.services.DateService;
-import com.esgi.stats19.api.soccer.leagues.DTO.GetLeagueMatch;
 import com.esgi.stats19.api.soccer.teams.DTO.CreateTeamDTO;
 import com.esgi.stats19.api.soccer.teams.DTO.GetMatches;
 import com.esgi.stats19.api.soccer.teams.DTO.GetTeamLeague;
@@ -64,11 +63,11 @@ public class TeamService {
         return this.teamRepository.save(team);
     }
 
-    public GetMatches countMatchResult(Team team) {
+    public GetMatches countMatchResult(Team team, List<TeamMatch> seasonMatches) {
         var teamId = team.getTeamId();
         GetMatches matches = new GetMatches();
 
-        getSeasonMatches(team).forEach(teamMatch -> {
+        seasonMatches.forEach(teamMatch -> {
             var goals = teamMatch.getGoals();
             var opponent = getOpponent(teamMatch.getMatch(), teamId).getGoals();
 
@@ -88,39 +87,40 @@ public class TeamService {
         return Math.toIntExact(matches.stream().filter(match -> match.isHome() == home).count());
     }
 
-    public int countDiffScore(Team team) {
-        return getSeasonMatches(team).stream().reduce(0, (counter, teamMatch2) -> {
+    public int countDiffScore(Team team, String season) {
+        return getSeasonMatches(team, season).stream().reduce(0, (counter, teamMatch2) -> {
             var goals = teamMatch2.getGoals();
             var opponent = getOpponent(teamMatch2.getMatch(), team.getTeamId()).getGoals();
             return counter + (goals - opponent);
         }, Integer::sum);
     }
 
-    public List<TeamMatch> getSeasonMatches(Team team) {
+    public List<TeamMatch> getSeasonMatches(Team team, String season) {
         return team.getTeamMatches().stream()
-                .filter(teamMatch -> matchIsSeason(teamMatch.getMatch()) && teamMatch.getMatch().isPlayed())
+                .filter(teamMatch -> matchIsSeason(teamMatch.getMatch(), season) && teamMatch.getMatch().isPlayed())
                 .sorted((teamMatch, teamMatch2) -> teamMatch2.getMatch().getDate().compareTo(teamMatch.getMatch().getDate()))
                 .collect(Collectors.toList());
     }
 
-    public Boolean matchIsSeason(Match match) {
-        return match.getSeason().equals(dateService.getSeason());
+    public Boolean matchIsSeason(Match match, String season) {
+        if (season == null) season = dateService.getSeason();
+        return match.getSeason().equals(season);
     }
 
-    public Integer getGoals(Team team) {
-        return getSeasonMatches(team).stream()
+    public Integer getGoals(Team team, List<TeamMatch> seasonMatches) {
+        return seasonMatches.stream()
                 .reduce(0, (counter, match) -> counter + match.getGoals(), Integer::sum);
     }
 
-    public Integer getGoalsConceded(Team team) {
-        return getSeasonMatches(team).stream()
+    public Integer getGoalsConceded(Team team, List<TeamMatch> seasonMatches) {
+        return seasonMatches.stream()
                 .reduce(0, (counter, match) ->
                                 counter + getOpponent(match.getMatch(), team.getTeamId()).getGoals()
                         , Integer::sum);
     }
 
-    public Integer getFouls(Team team) {
-        return getSeasonMatches(team).stream()
+    public Integer getFouls(Team team, List<TeamMatch> seasonMatches) {
+        return seasonMatches.stream()
                 .reduce(0, (fouls, teamMatch) -> fouls + teamMatch.getTeamsMatchesPlayers()
                                 .stream().reduce(0, (playerFoul, player) ->
                                         playerFoul + player.getCulprits().size(), Integer::sum),

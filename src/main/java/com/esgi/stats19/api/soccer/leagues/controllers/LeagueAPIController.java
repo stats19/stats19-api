@@ -5,11 +5,9 @@ import com.esgi.stats19.api.soccer.leagues.DTO.GetMatchByLeague;
 import com.esgi.stats19.api.soccer.leagues.DTO.GetRankingDTO;
 import com.esgi.stats19.api.soccer.leagues.services.LeagueDTOService;
 import com.esgi.stats19.api.soccer.leagues.services.LeagueService;
+import com.esgi.stats19.api.soccer.matches.services.MatchDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,11 +17,13 @@ public class LeagueAPIController {
 
     private final LeagueService leagueService;
     private final LeagueDTOService leagueDTOService;
+    private final MatchDTOService matchDTOService;
 
     @Autowired
-    public LeagueAPIController(LeagueService leagueService, LeagueDTOService leagueDTOService) {
+    public LeagueAPIController(LeagueService leagueService, LeagueDTOService leagueDTOService, MatchDTOService matchDTOService) {
         this.leagueService = leagueService;
         this.leagueDTOService = leagueDTOService;
+        this.matchDTOService = matchDTOService;
     }
 
     @GetMapping
@@ -37,12 +37,14 @@ public class LeagueAPIController {
     }
 
     @GetMapping("/{leagueId}/matches")
-    public GetMatchByLeague getMatches(@PathVariable Integer leagueId) {
+    public GetMatchByLeague getMatches(@PathVariable Integer leagueId, @RequestParam(value = "played", required = false) Boolean played) {
         var league = leagueService.getLeague(leagueId);
-        return this.leagueDTOService.getMatchDto(this.leagueService.getMatches(league), league);
+        if (played == null) played = false;
+        var matches = leagueService.getMatches(league, played);
+        return this.leagueDTOService.getMatchDto(matches, league, played);
     }
     @GetMapping("/{leagueId}/ranking")
-    public GetRankingDTO getRanking(@PathVariable Integer leagueId) {
-        return leagueService.getRankingByLeague(leagueId);
+    public GetRankingDTO getRanking(@PathVariable Integer leagueId, @RequestParam(value = "season", required = false) String season) {
+        return leagueService.getRankingByLeague(leagueId, season);
     }
 }

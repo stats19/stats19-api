@@ -134,6 +134,16 @@ public class MatchService {
         this.matchRepository.save(match);
     }
 
+    public Winner getResult(Match match) {
+        var home = getHomeTeam(match);
+        var away = getAwayTeam(match);
+
+        if (home.getGoals() > away.getGoals()) return Winner.HOME;
+        if( home.getGoals() < home.getGoals()) return Winner.AWAY;
+
+        return Winner.DRAW;
+    }
+
     public GetTeamMatchFormatted getTeamMatchFormatted(TeamMatch teamMatch) {
         var team = teamMatch.getTeam();
         return GetTeamMatchFormatted.builder()

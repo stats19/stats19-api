@@ -27,28 +27,28 @@ public class TeamDTOService {
         this.matchService = matchService;
     }
 
-    public GetTeamDTO toResponse(@NotNull Team team) {
-        var matches = teamService.countMatchResult(team);
-        var playerMatches = teamService.getSeasonMatches(team);
+    public GetTeamDTO toResponse(@NotNull Team team, String season) {
+        var playedMatches = teamService.getSeasonMatches(team, season);
+        var matches = teamService.countMatchResult(team, playedMatches);
         var nextMatches = teamService.getNextMatches(team);
         return GetTeamDTO.builder()
                 .teamId(team.getTeamId())
                 .name(team.getName())
                 .shortName(team.getShortName())
                 .league(teamService.getLeagueMatch(team))
-                .goals(teamService.getGoals(team))
-                .foul(teamService.getFouls(team))
+                .goals(teamService.getGoals(team, playedMatches))
+                .foul(teamService.getFouls(team, playedMatches))
                 .matchesWin(matches.getWins().size())
                 .matchesDraw(matches.getDraw().size())
                 .matchesLose(matches.getLose().size())
-                .matchesPlayed(teamService.getSeasonMatches(team).size())
-                .goalsConceded(teamService.getGoalsConceded(team))
+                .matchesPlayed(playedMatches.size())
+                .goalsConceded(teamService.getGoalsConceded(team, playedMatches))
                 .awayWin(teamService.countMatches(matches.getWins(), false))
                 .homeWin(teamService.countMatches(matches.getWins(), true))
-                .playedMatches(playerMatches.stream().map(this::getPlayedMatch).collect(Collectors.toList()))
+                .playedMatches(playedMatches.stream().map(this::getPlayedMatch).collect(Collectors.toList()))
                 .nextMatches(nextMatches.subList(0, Math.min(10, nextMatches.size()))
                         .stream().map(this::getNextMatch).collect(Collectors.toList()))
-                .recentMatches(playerMatches.subList(0, Math.min(5, playerMatches.size()))
+                .recentMatches(playedMatches.subList(0, Math.min(5, playedMatches.size()))
                         .stream().map(this::getRecentMatch).collect(Collectors.toList()))
                 .build();
     }
@@ -94,8 +94,8 @@ public class TeamDTOService {
         return new PlayedMatchTeam(team.getTeamId(), team.getName(), teamMatch.getGoals());
     }
 
-    public List<GetTeamDTO> toResponse(@NotNull List<Team> teams) {
-        return teams.stream().map(this::toResponse).collect(Collectors.toList());
+    public List<GetTeamDTO> toResponse(@NotNull List<Team> teams, String season) {
+        return teams.stream().map(team -> toResponse(team, season)).collect(Collectors.toList());
     }
 
 }
