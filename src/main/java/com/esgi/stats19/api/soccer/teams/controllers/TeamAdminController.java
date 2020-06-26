@@ -27,16 +27,16 @@ public class TeamAdminController {
     }
 
     @PostMapping
-    public ResponseEntity<GetTeamDTO> createTeam(@Validated @RequestBody CreateTeamDTO team) {
-        var createdTeam = this.teamDTOService.toResponse(this.teamService.createTeam(team));
+    public ResponseEntity<GetTeamDTO> createTeam(@Validated @RequestBody CreateTeamDTO team, @RequestParam(value = "season", required = false) String season) {
+        var createdTeam = this.teamDTOService.toResponse(this.teamService.createTeam(team), season);
         return ResponseEntity.created(this.uriService.getTeam(createdTeam.getTeamId()))
                 .body(createdTeam);
     }
 
     @PutMapping("/{teamId}")
     public GetTeamDTO updateTeam(@Validated @RequestBody UpdateTeamDTO updateTeam,
-                                     @PathVariable Integer teamId) {
-        return this.teamDTOService.toResponse(this.teamService.updateTeam(updateTeam, teamId));
+                                     @PathVariable Integer teamId, @RequestParam(value = "season", required = false) String season) {
+        return this.teamDTOService.toResponse(this.teamService.updateTeam(updateTeam, teamId), season);
     }
 
     @DeleteMapping("/{teamId}")

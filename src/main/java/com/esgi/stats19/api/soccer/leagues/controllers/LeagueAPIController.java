@@ -44,7 +44,7 @@ public class LeagueAPIController {
         return this.leagueDTOService.getMatchDto(matches, league, played);
     }
     @GetMapping("/{leagueId}/ranking")
-    public GetRankingDTO getRanking(@PathVariable Integer leagueId) {
-        return leagueService.getRankingByLeague(leagueId);
+    public GetRankingDTO getRanking(@PathVariable Integer leagueId, @RequestParam(value = "season", required = false) String season) {
+        return leagueService.getRankingByLeague(leagueId, season);
     }
 }

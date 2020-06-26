@@ -83,29 +83,30 @@ public class LeagueService {
         return this.leagueRepository.save(league);
     }
 
-    public GetRankingDTO getRankingByLeague(Integer leagueId) {
+    public GetRankingDTO getRankingByLeague(Integer leagueId, String season) {
         var league = getLeague(leagueId);
         return GetRankingDTO.builder()
                 .leagueId(league.getLeagueId())
                 .leagueName(league.getName())
-                .season(this.dateService.getSeason())
+                .season(season)
                 .rankingItems(getSeasonTeam(league.getLeagueId())
-                        .stream().map(this::gtoRankingItem)
+                        .stream().map(team -> getRankingItem(team, season))
                         .sorted(Comparator.comparingInt(RankingItem::getPoints).reversed())
                         .collect(Collectors.toList()))
                 .build();
     }
 
-    public RankingItem gtoRankingItem(Team team) {
-        var matches = teamService.countMatchResult(team);
+    public RankingItem getRankingItem(Team team, String season) {
+        var seasonMatches = teamService.getSeasonMatches(team, season);
+        var matches = teamService.countMatchResult(team, seasonMatches);
         return RankingItem.builder()
                 .teamId(team.getTeamId())
                 .name(team.getName())
-                .matchPlayed(teamService.getSeasonMatches(team).size())
+                .matchPlayed(seasonMatches.size())
                 .win(matches.getWins().size())
                 .draw(matches.getDraw().size())
                 .lose(matches.getLose().size())
-                .score(teamService.countDiffScore(team))
+                .score(teamService.countDiffScore(team, season))
                 .points(matches.getWins().size() * 3 + matches.getDraw().size())
                 .build();
     }
