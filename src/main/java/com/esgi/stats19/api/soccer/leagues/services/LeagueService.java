@@ -59,17 +59,18 @@ public class LeagueService {
         return this.leagueRepository.save(league);
     }
 
-    public List<Match> getMatches(League league) {
+    public List<Match> getMatches(League league, boolean played) {
         var today = this.dateService.today();
         var limit = this.dateService.endDate();
         System.out.println(today);
         System.out.println(limit);
-        return league.getMatches().stream().filter(match ->
-                {
-                    System.out.println(match.getDate());
-                    return match.getDate().compareTo(today) >= 0 && match.getDate().compareTo(limit) <= 0;
-                }
-        ).collect(Collectors.toList());
+        return league.getMatches().stream().filter(match -> {
+            if (played) return match.getSeason().equals(dateService.getSeason()) && match.isPlayed();
+            return match.getDate().compareTo(today) >= 0 && match.getDate().compareTo(limit) <= 0;
+        }).sorted((match, match2) -> {
+            if (played) return match2.getDate().compareTo(match.getDate());
+            return match.getDate().compareTo(match2.getDate());
+        }).collect(Collectors.toList());
     }
 
     public League updateLeague(UpdateLeagueDTO leagueDTO, Integer leagueId) {

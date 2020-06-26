@@ -1,5 +1,7 @@
 package com.esgi.stats19.api.soccer.leagues.DTO;
 
+import com.esgi.stats19.api.common.enums.ResultMatch;
+import com.esgi.stats19.api.common.enums.Winner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +17,7 @@ public class GetLeagueMatch {
     private Integer matchId;
     private String homeName;
     private String awayName;
+    private Winner resultMatch;
+    private Integer step;
     private Date date;
 }
