@@ -83,7 +83,7 @@ public class MatchAPIController {
         var process = processService.getProcess("predict");
         if (process == null || process.getStatus() != ProcessStatus.STARTED) {
             processService.updateProcessStatus("predict", ProcessStatus.INIT);
-            this.rabbitSender.send("predict", "DEVELOPMENT", "false");
+            this.rabbitSender.send("predict", "DEVELOPMENT", "FALSE");
         }
     }
 }
