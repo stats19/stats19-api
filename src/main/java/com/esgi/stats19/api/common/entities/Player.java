@@ -1,5 +1,7 @@
 package com.esgi.stats19.api.common.entities;
 
+import com.esgi.stats19.api.common.enums.Card;
+import com.esgi.stats19.api.common.enums.PlayerPosition;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +36,8 @@ public class Player implements Serializable {
     private Integer height;
     private Integer weight;
     private Double scoreAverage;
+    @Enumerated(EnumType.ORDINAL)
+    private PlayerPosition position;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamMatchPlayer> teamsMatchesPlayers;
