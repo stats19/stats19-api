@@ -87,12 +87,18 @@ public class TeamService {
         return Math.toIntExact(matches.stream().filter(match -> match.isHome() == home).count());
     }
 
-    public int countDiffScore(Team team, String season) {
-        return getSeasonMatches(team, season).stream().reduce(0, (counter, teamMatch2) -> {
+    public int countDiffScore(List<TeamMatch> matches, Integer teamId) {
+        return matches.stream().reduce(0, (counter, teamMatch2) -> {
             var goals = teamMatch2.getGoals();
-            var opponent = getOpponent(teamMatch2.getMatch(), team.getTeamId()).getGoals();
+            var opponent = getOpponent(teamMatch2.getMatch(), teamId).getGoals();
             return counter + (goals - opponent);
         }, Integer::sum);
+    }
+
+    public List<TeamMatch> getSeasonMatches(Team team, List<TeamMatch> matches) {
+        return matches.stream()
+                .filter(teamMatch -> teamMatch.getTeam().getTeamId().equals(team.getTeamId()))
+                .collect(Collectors.toList());
     }
 
     public List<TeamMatch> getSeasonMatches(Team team, String season) {

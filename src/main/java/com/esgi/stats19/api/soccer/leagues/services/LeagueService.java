@@ -3,6 +3,7 @@ package com.esgi.stats19.api.soccer.leagues.services;
 import com.esgi.stats19.api.common.entities.League;
 import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.common.entities.Team;
+import com.esgi.stats19.api.common.entities.TeamMatch;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.LeagueRepository;
 import com.esgi.stats19.api.common.services.DateService;
@@ -25,15 +26,13 @@ import java.util.stream.Collectors;
 public class LeagueService {
 
     private final LeagueRepository leagueRepository;
-    private final MatchService matchService;
     private final CountryService countryService;
     private final DateService dateService;
     private final TeamService teamService;
 
     @Autowired
-    public LeagueService(LeagueRepository leagueRepository, MatchService matchService, CountryService countryService, DateService dateService, TeamService teamService) {
+    public LeagueService(LeagueRepository leagueRepository, CountryService countryService, DateService dateService, TeamService teamService) {
         this.leagueRepository = leagueRepository;
-        this.matchService = matchService;
         this.countryService = countryService;
         this.dateService = dateService;
         this.teamService = teamService;
@@ -57,6 +56,10 @@ public class LeagueService {
                 .build();
 
         return this.leagueRepository.save(league);
+    }
+
+    public List<TeamMatch> getSeasonMatches(League league, String season) {
+        return leagueRepository.getSeasonMatches(league, season);
     }
 
     public List<Match> getMatches(League league, boolean played) {
@@ -85,19 +88,25 @@ public class LeagueService {
 
     public GetRankingDTO getRankingByLeague(Integer leagueId, String season) {
         var league = getLeague(leagueId);
+        var matches = getSeasonMatches(league, season);
+        season = season != null ? season : dateService.getSeason();
         return GetRankingDTO.builder()
                 .leagueId(league.getLeagueId())
                 .leagueName(league.getName())
                 .season(season)
-                .rankingItems(getSeasonTeam(league.getLeagueId(), season)
-                        .stream().map(team -> getRankingItem(team, season))
-                        .sorted(Comparator.comparingInt(RankingItem::getPoints).reversed())
+                .rankingItems(getSeasonTeam(league, season)
+                        .stream().map(team -> getRankingItem(team, matches))
+                        .sorted((rankingItem, rankingItem2) -> {
+                            var compare = rankingItem2.getPoints() - rankingItem.getPoints();
+                            if (compare == 0) return rankingItem2.getScore() - rankingItem.getScore();
+                            return compare;
+                        })
                         .collect(Collectors.toList()))
                 .build();
     }
 
-    public RankingItem getRankingItem(Team team, String season) {
-        var seasonMatches = teamService.getSeasonMatches(team, season);
+    public RankingItem getRankingItem(Team team, List<TeamMatch> LeagueMatches) {
+        var seasonMatches = teamService.getSeasonMatches(team, LeagueMatches);
         var matches = teamService.countMatchResult(team, seasonMatches);
         return RankingItem.builder()
                 .teamId(team.getTeamId())
@@ -106,24 +115,13 @@ public class LeagueService {
                 .win(matches.getWins().size())
                 .draw(matches.getDraw().size())
                 .lose(matches.getLose().size())
-                .score(teamService.countDiffScore(team, season))
+                .score(teamService.countDiffScore(seasonMatches, team.getTeamId()))
                 .points(matches.getWins().size() * 3 + matches.getDraw().size())
                 .build();
     }
 
-    public List<Team> getSeasonTeam(Integer leagueId, String season) {
-        if (season == null) season = dateService.getSeason();
-        HashSet<Integer> teams = new HashSet<>();
-        String finalSeason = season;
-        getLeague(leagueId).getMatches().stream()
-                .filter(match -> match.getSeason().equals(finalSeason) && match.isPlayed())
-                .forEach(match -> {
-                    match.getTeamMatches().forEach(teamMatch -> {
-                        teams.add(teamMatch.getTeam().getTeamId());
-                    });
-                });
-
-        return teams.stream().map(teamService::getTeam).collect(Collectors.toList());
+    public List<Team> getSeasonTeam(League league, String season) {
+        return leagueRepository.getSeasonTeams(league, season);
     }
 
 
