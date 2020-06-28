@@ -4,6 +4,7 @@ import com.esgi.stats19.api.common.entities.Player;
 import com.esgi.stats19.api.common.entities.Shot;
 import com.esgi.stats19.api.common.enums.Card;
 import com.esgi.stats19.api.common.services.URIService;
+import com.esgi.stats19.api.soccer.players.DTO.GetFantasyDTO;
 import com.esgi.stats19.api.soccer.players.DTO.GetPlayerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
