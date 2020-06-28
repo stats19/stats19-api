@@ -2,6 +2,7 @@ package com.esgi.stats19.api.soccer.players.controllers;
 
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDTO;
 import com.esgi.stats19.api.soccer.matches.services.MatchDTOService;
+import com.esgi.stats19.api.soccer.players.DTO.GetFantasyDTO;
 import com.esgi.stats19.api.soccer.players.DTO.GetPlayerDTO;
 import com.esgi.stats19.api.soccer.players.services.PlayerDTOService;
 import com.esgi.stats19.api.soccer.players.services.PlayerService;
@@ -40,6 +41,11 @@ public class PlayerAPIController {
     @GetMapping("/{playerId}/matches")
     public List<GetMatchDTO> getMatches(@PathVariable Integer playerId) {
         return this.matchDTOService.toResponse(this.playerService.getMatches(playerId));
+    }
+
+    @GetMapping("/fantasy")
+    public GetFantasyDTO getFantasy() {
+        return playerService.getFantasyLeague();
     }
 
 

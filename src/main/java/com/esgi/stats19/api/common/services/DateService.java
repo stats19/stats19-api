@@ -28,6 +28,11 @@ public class DateService {
         return calendar.getTime();
     }
 
+    public String format(Date date) {
+        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+        return dt1.format(date);
+    }
+
     public String getSeason() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today());

@@ -4,7 +4,6 @@ import com.esgi.stats19.api.process.dto.GetProcessDTO;
 import com.esgi.stats19.api.process.dto.UpdateStatusDTO;
 import com.esgi.stats19.api.process.services.ProcessDTOService;
 import com.esgi.stats19.api.process.services.ProcessService;
-import com.esgi.stats19.api.soccer.players.DTO.UpdateScoreDTO;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
