@@ -24,7 +24,6 @@ public class Player implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer playerId;
     @NotNull
-    @Size(min=1)
     @Column(name = "player_api_id")
     private Integer playerApiId;
     @NotNull
