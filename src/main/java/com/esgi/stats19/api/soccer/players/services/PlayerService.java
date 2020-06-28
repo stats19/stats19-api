@@ -2,6 +2,7 @@ package com.esgi.stats19.api.soccer.players.services;
 
 import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.common.entities.Player;
+import com.esgi.stats19.api.common.entities.TeamMatchPlayer;
 import com.esgi.stats19.api.common.enums.PlayerPosition;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.repositories.PlayerRepository;
@@ -32,6 +33,10 @@ public class PlayerService {
     public Player getPlayer(Integer playerId) {
         return this.playerRepository.findById(playerId)
                 .orElseThrow(() -> new NotFoundException("not found player"));
+    }
+
+    public List<TeamMatchPlayer> getActions(Player player, String season) {
+        return playerRepository.getSeasonActions(player, season);
     }
 
     public List<Match> getMatches(Integer playerId) {

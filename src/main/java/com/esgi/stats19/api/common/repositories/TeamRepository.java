@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TeamRepository extends JpaRepository<Team, Integer> {
-    List<Team> getByNameIgnoreCaseContaining(String search, Pageable pageable);
+    List<Team> getByNameIgnoreCaseContainingOrShortNameContaining(String search, String str, Pageable pageable);
 }

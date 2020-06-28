@@ -12,13 +12,10 @@ import com.esgi.stats19.api.soccer.leagues.DTO.CreateLeagueDTO;
 import com.esgi.stats19.api.soccer.leagues.DTO.GetRankingDTO;
 import com.esgi.stats19.api.soccer.leagues.DTO.RankingItem;
 import com.esgi.stats19.api.soccer.leagues.DTO.UpdateLeagueDTO;
-import com.esgi.stats19.api.soccer.matches.services.MatchService;
 import com.esgi.stats19.api.soccer.teams.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,21 +56,22 @@ public class LeagueService {
     }
 
     public List<TeamMatch> getSeasonMatches(League league, String season) {
-        return leagueRepository.getSeasonMatches(league, season);
+        return leagueRepository.getSeasonTeamMatches(league, season);
     }
 
     public List<Match> getMatches(League league, boolean played) {
         var today = this.dateService.today();
         var limit = this.dateService.endDate();
-        System.out.println(today);
-        System.out.println(limit);
-        return league.getMatches().stream().filter(match -> {
-            if (played) return match.getSeason().equals(dateService.getSeason()) && match.isPlayed();
-            return match.getDate().compareTo(today) >= 0 && match.getDate().compareTo(limit) <= 0;
-        }).sorted((match, match2) -> {
-            if (played) return match2.getDate().compareTo(match.getDate());
-            return match.getDate().compareTo(match2.getDate());
-        }).collect(Collectors.toList());
+
+        if (played) return leagueRepository.getSeasonMatches(league, dateService.getSeason());
+        return leagueRepository.getComingMatches(league, today, limit);
+//        return league.getMatches().stream().filter(match -> {
+//            if (played) return match.getSeason().equals(dateService.getSeason()) && match.isPlayed();
+//            return match.getDate().compareTo(today) >= 0 && match.getDate().compareTo(limit) <= 0;
+//        }).sorted((match, match2) -> {
+//            if (played) return match2.getDate().compareTo(match.getDate());
+//            return match.getDate().compareTo(match2.getDate());
+//        }).collect(Collectors.toList());
     }
 
     public League updateLeague(UpdateLeagueDTO leagueDTO, Integer leagueId) {

@@ -45,7 +45,7 @@ public class TeamMatchPlayer {
     @OneToMany(mappedBy = "teamMatchPlayer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Corner> corners;
 
-    @OneToMany(mappedBy = "scorer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "scorer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Shot> scored;
     @OneToMany(mappedBy = "assist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Shot> assisted;

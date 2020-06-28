@@ -2,7 +2,6 @@ package com.esgi.stats19.api.soccer.matches.services;
 
 import com.esgi.stats19.api.common.entities.*;
 import com.esgi.stats19.api.common.enums.Card;
-import com.esgi.stats19.api.common.enums.ResultMatch;
 import com.esgi.stats19.api.common.enums.Winner;
 import com.esgi.stats19.api.common.exceptions.BadRequestException;
 import com.esgi.stats19.api.common.exceptions.InternalErrorException;
@@ -10,12 +9,11 @@ import com.esgi.stats19.api.common.exceptions.NotFoundException;
 import com.esgi.stats19.api.common.exceptions.ServerErrorException;
 import com.esgi.stats19.api.common.repositories.MatchRepository;
 import com.esgi.stats19.api.common.repositories.TeamMatchPlayerRepository;
+import com.esgi.stats19.api.common.services.DateService;
 import com.esgi.stats19.api.soccer.matches.DTO.GetLeagueDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchDetailsFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetMatchFormattedDTO;
 import com.esgi.stats19.api.soccer.matches.DTO.GetTeamMatchFormatted;
-import com.esgi.stats19.api.soccer.players.services.PlayerService;
-import com.esgi.stats19.api.soccer.teams.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +28,13 @@ public class MatchService {
 
     private final MatchRepository matchRepository;
     private final TeamMatchPlayerRepository teamMatchPlayerRepository;
-    private final TeamService teamService;
+    private final DateService dateService;
 
     @Autowired
-    public MatchService(MatchRepository matchRepository, TeamMatchPlayerRepository teamMatchPlayerRepository, TeamService teamService) {
+    public MatchService(MatchRepository matchRepository, TeamMatchPlayerRepository teamMatchPlayerRepository, DateService dateService) {
         this.matchRepository = matchRepository;
         this.teamMatchPlayerRepository = teamMatchPlayerRepository;
-        this.teamService = teamService;
+        this.dateService = dateService;
     }
 
     public List<Match> getMatches() {
@@ -48,17 +46,14 @@ public class MatchService {
             return this.matchRepository.findAllByPlayedIsTrue();
         }
 
-        Calendar calendar = Calendar.getInstance();
+        var now = dateService.today();
+        var limit = dateService.endDate();
+        return this.matchRepository.findAllByDateBetweenAndPlayedIsFalse(now, limit);
+    }
 
-        try {
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-            calendar.setTime(dateFormatter.parse("2016-01-01"));
-        } catch (ParseException e) {
-            throw new ServerErrorException("date not parsable");
-        }
-        Date now = calendar.getTime();
-        calendar.add(Calendar.DAY_OF_YEAR, 7);
-        return this.matchRepository.findAllByDateBetweenAndPlayedIsFalse(now, calendar.getTime());
+    public List<Match> updatePlayedMatches() {
+        var matches = matchRepository.findAllByPlayedIsFalseAndDateBefore(dateService.today());
+        return matches.stream().peek(match -> match.setPlayed(true)).collect(Collectors.toList());
     }
 
     public List<Match> getMatchToScore() {
@@ -134,16 +129,6 @@ public class MatchService {
         this.matchRepository.save(match);
     }
 
-    public Winner getResult(Match match) {
-        var home = getHomeTeam(match);
-        var away = getAwayTeam(match);
-
-        if (home.getGoals() > away.getGoals()) return Winner.HOME;
-        if( home.getGoals() < home.getGoals()) return Winner.AWAY;
-
-        return Winner.DRAW;
-    }
-
     public GetTeamMatchFormatted getTeamMatchFormatted(TeamMatch teamMatch) {
         var team = teamMatch.getTeam();
         return GetTeamMatchFormatted.builder()
@@ -211,21 +196,5 @@ public class MatchService {
     public Integer getElapsed(GetMatchDetailsFormattedDTO getMatchDetailsFormattedDTO) {
         var elapsedPlus = getMatchDetailsFormattedDTO.getElapsedPlus() != null ? getMatchDetailsFormattedDTO.getElapsedPlus() : 0;
         return getMatchDetailsFormattedDTO.getElapsed() + elapsedPlus;
-    }
-
-    public List<TeamMatch> getTeams(Match match) {
-        return match.getTeamMatches();
-    }
-
-//    public Match createMatch(CreateMatchDTO matchDT0) {
-//        var match = Match.builder()
-//                .name(matchDT0.getName())
-//                .build();
-//
-//        return this.matchRepository.save(match);
-//    }
-
-    public void deleteMatch(Integer matchId) {
-        this.matchRepository.deleteById(matchId);
     }
 }

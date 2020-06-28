@@ -13,12 +13,13 @@ import java.util.Date;
 @Service
 public class DateService {
     public Date today() {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            return dateFormatter.parse("2016-01-01");
-        } catch (ParseException e) {
-            throw new ServerErrorException("error parsing date getMatches [LeagueService]");
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.YEAR, -4);
+        calendar.add(Calendar.MONTH, -5);
+        calendar.add(Calendar.DAY_OF_YEAR, -27);
+
+        return calendar.getTime();
     }
 
     public Date endDate() {

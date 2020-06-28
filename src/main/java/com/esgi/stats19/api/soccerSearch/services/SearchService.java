@@ -37,7 +37,7 @@ public class SearchService {
 
     public List<SearchResultDTO> getSearchTeamResult(String searchStr) {
         var pageable = PageRequest.of(0, 10);
-        return this.teamRepository.getByNameIgnoreCaseContaining(searchStr, pageable).stream().map(team ->
+        return this.teamRepository.getByNameIgnoreCaseContainingOrShortNameContaining(searchStr, searchStr, pageable).stream().map(team ->
                 SearchResultDTO.builder().id(team.getTeamId()).name(team.getName()).build()
         ).collect(Collectors.toList());
     }
