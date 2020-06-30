@@ -15,12 +15,13 @@ public class Sender {
 
     private final RabbitTemplate template;
 
-    @Value("${receiver.rabbitmq.queue}")
-    private static String queue;
+    private String queue;
 
     @Autowired
-    public Sender(RabbitTemplate template) {
+    public Sender(@Value("${receiver.rabbitmq.queue}")String queue,
+                  RabbitTemplate template) {
         this.template = template;
+        this.queue = queue;
     }
 
     public void send(String process, String environment, String force ) {
