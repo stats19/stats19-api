@@ -53,7 +53,8 @@ public class MatchService {
 
     public List<Match> updatePlayedMatches() {
         var matches = matchRepository.findAllByPlayedIsFalseAndDateBefore(dateService.today());
-        return matches.stream().peek(match -> match.setPlayed(true)).collect(Collectors.toList());
+        var updated = matches.stream().peek(match -> match.setPlayed(true)).collect(Collectors.toList());
+        return matchRepository.saveAll(updated);
     }
 
     public List<Match> getMatchToScore() {
