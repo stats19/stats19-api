@@ -21,6 +21,7 @@ public class Team implements Serializable {
     private Integer teamFifaId;
     private String name;
     private String shortName;
+    private String picture;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamMatch> teamMatches;

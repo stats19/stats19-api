@@ -37,6 +37,9 @@ public class Player implements Serializable {
     private Double scoreAverage;
     @Enumerated(EnumType.ORDINAL)
     private PlayerPosition position;
+    private String picture;
+    private String countryName;
+    private String countryPicture;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamMatchPlayer> teamsMatchesPlayers;

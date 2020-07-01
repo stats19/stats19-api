@@ -16,6 +16,7 @@ public class League {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer leagueId;
+    private String picture;
 
     @NotNull
     @Column(length = 45)
