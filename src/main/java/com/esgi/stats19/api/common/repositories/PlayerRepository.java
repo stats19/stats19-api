@@ -1,6 +1,7 @@
 package com.esgi.stats19.api.common.repositories;
 
 import com.esgi.stats19.api.common.entities.Player;
+import com.esgi.stats19.api.common.entities.Team;
 import com.esgi.stats19.api.common.entities.TeamMatch;
 import com.esgi.stats19.api.common.entities.TeamMatchPlayer;
 import com.esgi.stats19.api.common.enums.PlayerPosition;
@@ -29,4 +30,15 @@ public interface PlayerRepository extends JpaRepository<Player, Integer>{
             "JOIN Match sm on sm.matchApiId = tm.match.matchApiId\n" +
             "WHERE p = ?1 AND sm.season = ?2 AND sm.played = true")
     List<TeamMatchPlayer> getSeasonActions(Player player, String season);
+
+    @Query(value="SELECT t\n" +
+            "FROM Team t\n" +
+            "JOIN Player p on p = ?1\n" +
+            "JOIN TeamMatchPlayer tmp on tmp.player.playerApiId = p.playerApiId\n" +
+            "JOIN TeamMatch tm on tm = tmp.teamMatch\n" +
+            "JOIN Match sm on sm.matchApiId = tm.match.matchApiId\n" +
+            "WHERE t.teamApiId = tm.team.teamApiId AND sm.season = '2015/2016'\n" +
+            "GROUP BY t.name\n" +
+            "ORDER BY sm.date DESC")
+    List<Team> getCurrentTeam(Player player, String season);
 }

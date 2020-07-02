@@ -2,6 +2,7 @@ package com.esgi.stats19.api.soccer.players.services;
 
 import com.esgi.stats19.api.common.entities.Match;
 import com.esgi.stats19.api.common.entities.Player;
+import com.esgi.stats19.api.common.entities.Team;
 import com.esgi.stats19.api.common.entities.TeamMatchPlayer;
 import com.esgi.stats19.api.common.enums.PlayerPosition;
 import com.esgi.stats19.api.common.exceptions.NotFoundException;
@@ -37,6 +38,11 @@ public class PlayerService {
 
     public List<TeamMatchPlayer> getActions(Player player, String season) {
         return playerRepository.getSeasonActions(player, season);
+    }
+
+    public Team getTeam(Player player, String season) {
+        var teams = playerRepository.getCurrentTeam(player, season);
+        return teams.size() > 0 ? teams.get(0) : null;
     }
 
     public List<Match> getMatches(Integer playerId) {
