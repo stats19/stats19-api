@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetTeamMatchFormatted {
     private Integer teamId;
+    private String picture;
     private String name;
     private Integer goals;
     private Integer possession;

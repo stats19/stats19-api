@@ -96,7 +96,7 @@ public class MatchService {
         return GetMatchFormattedDTO.builder()
                 .matchId(match.getMatchId())
                 .league(GetLeagueDTO.builder().leagueId(league.getLeagueId())
-                        .leagueName(league.getName()).build())
+                        .leagueName(league.getName()).leaguePicture(league.getPicture()).build())
                 .awayTeam(getTeamMatchFormatted(getAwayTeam(match)))
                 .homeTeam(getTeamMatchFormatted(getHomeTeam(match)))
                 .details(getMatchDetailsFormattedDTO(match))
@@ -134,7 +134,8 @@ public class MatchService {
         var team = teamMatch.getTeam();
         return GetTeamMatchFormatted.builder()
                 .teamId(team.getTeamId())
-                .name(team.getName())
+                .picture(team.getPicture())
+                .name(team.getShortName())
                 .possession(teamMatch.getPossession())
                 .goals(teamMatch.getGoals())
                 .shotOnTarget(teamMatch.getTeamsMatchesPlayers().stream().reduce(0, (shotsOnTarget, teamMatchPlayer2)

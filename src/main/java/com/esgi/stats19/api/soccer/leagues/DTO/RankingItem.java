@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class RankingItem {
     private Integer teamId;
     private String name;
+    private String picture;
     private int matchPlayed;
     private int win;
     private int draw;

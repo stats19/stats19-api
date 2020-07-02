@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class GetLeagueDTO {
     private Integer leagueId;
     private String leagueName;
+    private String leaguePicture;
 }
