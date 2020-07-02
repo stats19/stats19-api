@@ -37,7 +37,7 @@ public interface PlayerRepository extends JpaRepository<Player, Integer>{
             "JOIN TeamMatchPlayer tmp on tmp.player.playerApiId = p.playerApiId\n" +
             "JOIN TeamMatch tm on tm = tmp.teamMatch\n" +
             "JOIN Match sm on sm.matchApiId = tm.match.matchApiId\n" +
-            "WHERE t.teamApiId = tm.team.teamApiId AND sm.season = '2015/2016'\n" +
+            "WHERE t.teamApiId = tm.team.teamApiId AND sm.season = ?2\n" +
             "GROUP BY t.name\n" +
             "ORDER BY sm.date DESC")
     List<Team> getCurrentTeam(Player player, String season);
