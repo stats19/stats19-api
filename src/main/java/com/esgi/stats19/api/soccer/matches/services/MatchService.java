@@ -95,6 +95,7 @@ public class MatchService {
         var league = match.getLeague();
         return GetMatchFormattedDTO.builder()
                 .matchId(match.getMatchId())
+                .forecast(match.getForecast())
                 .league(GetLeagueDTO.builder().leagueId(league.getLeagueId())
                         .leagueName(league.getName()).leaguePicture(league.getPicture()).build())
                 .awayTeam(getTeamMatchFormatted(getAwayTeam(match)))

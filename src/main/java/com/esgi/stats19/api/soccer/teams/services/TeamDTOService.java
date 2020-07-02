@@ -60,6 +60,7 @@ public class TeamDTOService {
                 .matchId(match.getMatchId())
                 .date(match.getDate())
                 .resultMatch(teamService.getResultMatch(teamMatch))
+                .forecast(match.getForecast())
                 .home(getPlayedMatchTeam(match, true))
                 .away(getPlayedMatchTeam(match, false))
                 .build();
