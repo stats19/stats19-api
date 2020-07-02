@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class FantasyPlayerDTO {
     private Integer playerId;
     private String name;
+    private String picture;
     private String leagueName;
     private Integer leagueId;
     private Double score;

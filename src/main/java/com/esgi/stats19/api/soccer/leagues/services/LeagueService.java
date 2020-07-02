@@ -109,6 +109,7 @@ public class LeagueService {
         return RankingItem.builder()
                 .teamId(team.getTeamId())
                 .name(team.getName())
+                .picture(team.getPicture())
                 .matchPlayed(seasonMatches.size())
                 .win(matches.getWins().size())
                 .draw(matches.getDraw().size())

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetLeagueDTO {
     private Integer leagueId;
+    private String picture;
     private String name;
     private String country;
     private String matches;

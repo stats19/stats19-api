@@ -24,4 +24,9 @@ public class GetPlayerDTO {
     private Integer goals;
     private Double score;
     private String matches;
+    private String picture;
+    private String countryName;
+    private String countryPicture;
+    private String teamPicture;
+    private Integer teamId;
 }

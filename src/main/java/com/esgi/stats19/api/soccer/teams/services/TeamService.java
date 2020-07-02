@@ -169,7 +169,7 @@ public class TeamService {
                 .stream().findFirst().orElseThrow(() -> new ServerErrorException("GetLeagueMatch error"))
                 .getMatch().getLeague();
 
-        return new GetTeamLeague(league.getLeagueId(), league.getName());
+        return new GetTeamLeague(league.getLeagueId(), league.getName(), league.getPicture());
     }
 
     public void deleteTeam(Integer teamId) {

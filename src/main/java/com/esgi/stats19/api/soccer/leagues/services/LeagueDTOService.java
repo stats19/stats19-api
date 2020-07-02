@@ -38,6 +38,7 @@ public class LeagueDTOService {
                 .leagueId(league.getLeagueId())
                 .name(league.getName())
                 .country(league.getCountry().getName())
+                .picture(league.getPicture())
                 .matches(this.uriService.getLeague(league.getLeagueId()).toString())
                 .build();
     }
@@ -68,11 +69,15 @@ public class LeagueDTOService {
                 .build();
     }
     public GetLeagueMatch getMatchDto(@NotNull Match match) {
+        var home = this.matchService.getHomeTeam(match).getTeam();
+        var away = this.matchService.getAwayTeam(match).getTeam();
         return GetLeagueMatch.builder()
                 .step(match.getStage())
                 .resultMatch(match.getForecast())
-                .homeName(this.matchService.getHomeTeam(match).getTeam().getName())
-                .awayName(this.matchService.getAwayTeam(match).getTeam().getName())
+                .homeName(home.getShortName())
+                .homePicture(home.getPicture())
+                .awayName(away.getShortName())
+                .awayPicture(away.getPicture())
                 .date(match.getDate())
                 .build();
     }

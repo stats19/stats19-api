@@ -8,4 +8,5 @@ import lombok.Data;
 public class GetTeamLeague {
     private Integer leagueId;
     private String leagueName;
+    private String leaguePicture;
 }

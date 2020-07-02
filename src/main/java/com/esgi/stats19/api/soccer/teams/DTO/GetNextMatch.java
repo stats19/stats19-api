@@ -17,6 +17,8 @@ public class GetNextMatch {
     private Integer stage;
     private String homeTeam;
     private String awayTeam;
+    private String homePicture;
+    private String awayPicture;
     private Integer homeTeamId;
     private Integer awayTeamId;
     private ResultMatch forecastMatch;

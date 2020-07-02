@@ -16,6 +16,8 @@ import java.util.Date;
 public class GetLeagueMatch {
     private Integer matchId;
     private String homeName;
+    private String homePicture;
+    private String awayPicture;
     private String awayName;
     private Winner resultMatch;
     private Integer step;

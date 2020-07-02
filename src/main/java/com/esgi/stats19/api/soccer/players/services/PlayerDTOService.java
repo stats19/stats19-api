@@ -28,8 +28,10 @@ public class PlayerDTOService {
         this.dateService = dateService;
         this.playerService = playerService;
     }
+
     public GetPlayerDTO toResponse(Player player, String season) {
         var tmp = playerService.getActions(player, season);
+        var team = playerService.getTeam(player, season);
         return GetPlayerDTO.builder()
                 .name(player.getName())
                 .playerId(player.getPlayerId())
@@ -57,6 +59,11 @@ public class PlayerDTOService {
                                 Math.toIntExact(count + teamMatchPlayer.getScored().stream()
                                         .filter(Shot::isScored).count()), Integer::sum))
                 .matches(this.uriService.getMatchesByPlayer(player.getPlayerId()).toString())
+                .picture(player.getPicture())
+                .countryName(player.getCountryName())
+                .countryPicture(player.getCountryPicture())
+                .teamPicture(team != null ? team.getPicture() : null)
+                .teamId(team != null ? team.getTeamId() : null)
                 .build();
     }
 
