@@ -25,6 +25,7 @@ public class GetTeamDTO {
     private Integer goals;
     private Integer goalsConceded;
     private Integer foul;
+    private String picture;
     private List<GetRecentMatch> recentMatches;
     private List<GetPlayedMatch> playedMatches;
     private List<GetNextMatch> nextMatches;

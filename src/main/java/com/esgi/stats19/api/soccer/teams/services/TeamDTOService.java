@@ -35,6 +35,7 @@ public class TeamDTOService {
                 .teamId(team.getTeamId())
                 .name(team.getName())
                 .shortName(team.getShortName())
+                .picture(team.getPicture())
                 .league(teamService.getLeagueMatch(team))
                 .goals(teamService.getGoals(team, playedMatches))
                 .foul(teamService.getFouls(team, playedMatches))
@@ -75,10 +76,12 @@ public class TeamDTOService {
         return GetNextMatch.builder()
                 .date(match.getDate())
                 .stage(match.getStage())
-                .homeTeam(home.getName())
+                .homeTeam(home.getShortName())
                 .homeTeamId(home.getTeamId())
-                .awayTeam(away.getName())
+                .homePicture(home.getPicture())
+                .awayTeam(away.getShortName())
                 .awayTeamId(away.getTeamId())
+                .awayPicture(away.getPicture())
                 .forecastMatch(teamService.getForecast(match.getForecast(), teamMatch.isHome()))
                 .build();
     }
@@ -91,7 +94,7 @@ public class TeamDTOService {
             teamMatch = matchService.getAwayTeam(match);
         }
         var team = teamMatch.getTeam();
-        return new PlayedMatchTeam(team.getTeamId(), team.getName(), teamMatch.getGoals());
+        return new PlayedMatchTeam(team.getTeamId(), team.getShortName(), teamMatch.getGoals(), team.getPicture());
     }
 
     public List<GetTeamDTO> toResponse(@NotNull List<Team> teams, String season) {

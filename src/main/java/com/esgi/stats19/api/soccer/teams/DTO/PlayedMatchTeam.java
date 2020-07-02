@@ -9,4 +9,5 @@ public class PlayedMatchTeam {
     private Integer teamId;
     private String name;
     private Integer goals;
+    private String picture;
 }
