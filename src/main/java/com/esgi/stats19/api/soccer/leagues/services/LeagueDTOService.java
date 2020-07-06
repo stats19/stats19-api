@@ -64,6 +64,7 @@ public class LeagueDTOService {
         return GetPlayedMatch.builder()
                 .matchId(match.getMatchId())
                 .date(match.getDate())
+                .forecast(match.getForecast())
                 .home(teamDTOService.getPlayedMatchTeam(match, true))
                 .away(teamDTOService.getPlayedMatchTeam(match, false))
                 .build();
