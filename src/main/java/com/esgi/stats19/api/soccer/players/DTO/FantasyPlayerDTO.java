@@ -15,7 +15,9 @@ public class FantasyPlayerDTO {
     private String picture;
     private String leagueName;
     private Integer leagueId;
+    private String leaguePicture;
     private Double score;
     private String teamName;
     private Integer teamId;
+    private String teamPicture;
 }

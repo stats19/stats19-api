@@ -82,12 +82,14 @@ public class PlayerService {
         return FantasyPlayerDTO.builder()
                 .leagueId(league.getLeagueId())
                 .leagueName(league.getName())
+                .leaguePicture(league.getPicture())
                 .picture(player.getPicture())
                 .name(player.getName())
                 .playerId(player.getPlayerId())
                 .score(player.getScoreAverage())
                 .teamId(team.getTeamId())
                 .teamName(team.getName())
+                .teamPicture(team.getPicture())
                 .build();
     }
 
