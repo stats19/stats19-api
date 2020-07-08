@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface PlayerRepository extends JpaRepository<Player, Integer>{
     List<Player> getByNameIgnoreCaseContaining(String search, Pageable pageable);
-    List<Player> getByPosition(PlayerPosition position, Pageable pageable);
+    List<Player> getByPositionAndScoreAverageIsNotNull(PlayerPosition position, Pageable pageable);
     @Query(value="SELECT t\n" +
             "FROM TeamMatch t\n" +
             "JOIN Match m on m.matchApiId = t.match.matchApiId \n" +

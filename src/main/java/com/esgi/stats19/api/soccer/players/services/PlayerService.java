@@ -57,14 +57,15 @@ public class PlayerService {
         return playerRepository.save(player);
     }
 
-    public GetFantasyDTO getFantasyLeague() {
-        var pageable = PageRequest.of(0, 5, Sort.by("scoreAverage").descending());
+    public GetFantasyDTO getFantasyLeague(Integer page) {
+        page = page == null ? 0 : page;
+        var pageable = PageRequest.of(page, 10, Sort.by("scoreAverage").descending());
         return GetFantasyDTO.builder()
                 .date(dateService.format(dateService.today()))
-                .goalKeepers(getFantasyPlayers(playerRepository.getByPosition(PlayerPosition.GOAL_KEEPER, pageable)))
-                .defenders(getFantasyPlayers(playerRepository.getByPosition(PlayerPosition.DEFENDER, pageable)))
-                .middleFielders(getFantasyPlayers(playerRepository.getByPosition(PlayerPosition.MID_FIELDER, pageable)))
-                .forwards(getFantasyPlayers(playerRepository.getByPosition(PlayerPosition.FORWARD, pageable)))
+                .goalKeepers(getFantasyPlayers(playerRepository.getByPositionAndScoreAverageIsNotNull(PlayerPosition.GOAL_KEEPER, pageable)))
+                .defenders(getFantasyPlayers(playerRepository.getByPositionAndScoreAverageIsNotNull(PlayerPosition.DEFENDER, pageable)))
+                .middleFielders(getFantasyPlayers(playerRepository.getByPositionAndScoreAverageIsNotNull(PlayerPosition.MID_FIELDER, pageable)))
+                .forwards(getFantasyPlayers(playerRepository.getByPositionAndScoreAverageIsNotNull(PlayerPosition.FORWARD, pageable)))
                 .build();
     }
 

@@ -45,8 +45,8 @@ public class PlayerAPIController {
     }
 
     @GetMapping("/fantasy")
-    public GetFantasyDTO getFantasy() {
-        return playerService.getFantasyLeague();
+    public GetFantasyDTO getFantasy(@RequestParam(required = false) Integer page) {
+        return playerService.getFantasyLeague(page);
     }
 
 
