@@ -59,7 +59,7 @@ public class PlayerService {
 
     public GetFantasyDTO getFantasyLeague(Integer page) {
         page = page == null ? 0 : page;
-        var pageable = PageRequest.of(page, 10, Sort.by("scoreAverage").descending());
+        var pageable = PageRequest.of(page, 10, Sort.by("scoreAverage").descending().and(Sort.by("playerId").ascending()));
         return GetFantasyDTO.builder()
                 .date(dateService.format(dateService.today()))
                 .goalKeepers(getFantasyPlayers(playerRepository.getByPositionAndScoreAverageIsNotNull(PlayerPosition.GOAL_KEEPER, pageable)))
