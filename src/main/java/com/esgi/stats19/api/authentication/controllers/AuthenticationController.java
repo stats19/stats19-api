@@ -1,14 +1,12 @@
 package com.esgi.stats19.api.authentication.controllers;
 
 import com.esgi.stats19.api.authentication.dto.CreateAccountDTO;
-import com.esgi.stats19.api.authentication.dto.GetCreatedAccount;
 import com.esgi.stats19.api.authentication.dto.GetUserDTO;
 import com.esgi.stats19.api.authentication.dto.LoginDTO;
 import com.esgi.stats19.api.authentication.security.TokenProvider;
 import com.esgi.stats19.api.authentication.services.AccountService;
 import com.esgi.stats19.api.authentication.services.UserDTOService;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.readOnlyHttpHeaders;
 
 @RestController
 @RequestMapping("/")
